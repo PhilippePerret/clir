@@ -60,12 +60,12 @@ class << self
   private
 
     def reset
+      Clir::State.reset
       @table_short2long_options = nil
       @main_command = nil
       @components   = [] 
       @options = {}
       @params  = {}
-      Clir::State.reset
     end
 
     ##
@@ -87,6 +87,7 @@ class << self
     def table_short2long_options
       @table_short2long_options ||= begin
         {
+          :h  => :help,
           :q  => :quiet,
           :v  => :verbose,
           :x  => :debug,
