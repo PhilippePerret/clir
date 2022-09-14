@@ -3,14 +3,23 @@ require_relative 'lib/clir/version'
 Gem::Specification.new do |s|
   s.name          = "clir"
   s.version       = Clir::VERSION
-  s.authors       = ["PhilippePerret"]
+  s.authors       = ["Philippe Perret"]
   s.email         = ["philippe.perret@yahoo.fr"]
 
   s.summary       = %q{Command Line Interface for Ruby applications}
   s.description   = %q{Command Line Interface for Ruby applications}
   s.homepage      = "https://github.com/PhilippePerret/clir"
   s.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
+
+  # --- Development dependencies ---
+
   s.add_development_dependency 'minitest'
+  s.add_development_dependency 'minitest-color'
+
+  # --- Dependencies ---
+
+  s.add_dependency "json"
+
 
   s.metadata["allowed_push_host"] = "https://github.com/PhilippePerret/clir"
 
