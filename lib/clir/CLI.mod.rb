@@ -32,6 +32,7 @@ class << self
   # - parameters (key=value pairs)
   # 
   def parse(argv)
+    argv = argv.split(' ') if argv.is_a?(String)
     reset
     argv.each do |arg|
       if arg.start_with?('--')
@@ -64,6 +65,7 @@ class << self
       @components   = [] 
       @options = {}
       @params  = {}
+      Clir::State.reset
     end
 
     ##
@@ -85,8 +87,9 @@ class << self
     def table_short2long_options
       @table_short2long_options ||= begin
         {
-          v: :verbose,
-          x: :debug,
+          :q  => :quiet,
+          :v  => :verbose,
+          :x  => :debug,
         }.merge(app_options_table)
       end
     end
