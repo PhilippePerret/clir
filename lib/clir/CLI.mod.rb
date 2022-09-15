@@ -2,11 +2,12 @@
 
   A command line is composed by:
 
-    - main command (main_command): firts element not leading with '-'
-      dans without '='
-    - options: elements that lead with '-' or '--'
-    - params : elments that contain '=' (key=value pairs)
-    - components: all other elements
+  - app command (for example: 'rake')
+  - main command (main_command): firts element not leading with '-'
+    dans without '=' (for example: 'build' in 'rake build')
+  - options: elements that lead with '-' or '--'
+  - params : elments that contain '=' (key=value pairs)
+  - components: all other elements
 
   We can get this elments with:
 
