@@ -36,7 +36,7 @@ class << self
   end
 
   def test?
-    :TRUE == @__teston ||= true_or_false(CLI.options[:test] === true || ENV['CLI_TEST'] == 'true' )
+    :TRUE == @__teston ||= true_or_false((CLI.options[:test]||CLI.options[:tests]) === true || ENV['CLI_TEST'] == 'true' || ENV['CLI_TESTS'] == 'true' )
   end
 
   def help?

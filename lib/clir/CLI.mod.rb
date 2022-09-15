@@ -27,7 +27,16 @@ class << self
   attr_reader :main_command, :options, :params, :components
 
   ##
-  # Main method which parse command line to find out :
+  # First class method
+  # (call it at start-up)
+  # 
+  def init
+    parse(ARGV)
+    Q.init
+  end
+
+  ##
+  # Main method which parse command line to get:
   # - main command
   # - options (leadings with -/--)
   # - parameters (key=value pairs)
@@ -65,8 +74,8 @@ class << self
       @table_short2long_options = nil
       @main_command = nil
       @components   = [] 
-      @options = {}
-      @params  = {}
+      @options      = {}
+      @params       = {}
     end
 
     ##

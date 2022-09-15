@@ -28,6 +28,7 @@ class StateMethodsTests < Minitest::Test
   end
 
   def test_tests_state
+    ENV['CLI_TEST'] = nil
     CLI.parse('macomm')
     refute test?
     ENV['CLI_TEST'] = 'true'

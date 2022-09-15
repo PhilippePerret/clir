@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   # --- Dependencies ---
 
   s.add_dependency "json"
+  s.add_dependency "tty-prompt"
 
 
   s.metadata["allowed_push_host"] = "https://github.com/PhilippePerret/clir"
