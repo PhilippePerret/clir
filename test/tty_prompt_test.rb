@@ -154,13 +154,52 @@ class TTYPromptTests < Minitest::Test
       {name:'Deuxième', value:2},
       {name:'Troisième', value:3}
     ])
-    ENV['CLI_TEST_INPUTS'] = ['brute', {name:'Deuxième'}, {item:3}].to_json
+    ENV['CLI_TEST_INPUTS'] = ['brute', {name:'Deuxième'}, {item:3}, {rname:'eux'}].to_json
     # Litteral value
     assert_equal 'brute', r.response
     # Value by name (item title)
     assert_equal 2, r.response
     # Value by index
     assert_equal 3, r.response
+    # Value by reg-name
+    assert_equal 2, r.response
+  end
+
+  # Q.yes? test
+  def test_tty_responder_response_with_yes
+    ENV['CLI_TEST'] = 'true'
+    r = new_tty_responder('yes')
+    ENV['CLI_TEST_INPUTS'] = ['o','O','ouI','n','c','y','YES',"\n",'TRUE','false', 1, 0].to_json
+    assert r.response # 'o'
+    assert r.response # 'O'
+    assert r.response # 'ouI'
+    refute r.response # 'n'
+    refute r.response # 'c'
+    assert r.response # 'y'
+    assert r.response # 'YES'
+    assert r.response # "\n"
+    assert r.response # 'TRUE'
+    refute r.response # 'false'
+    assert r.response # 1
+    refute r.response # 0
+  end
+
+  # Q.multiselect test
+  def test_tty_responder_response_with_multiselect
+    ENV['CLI_TEST'] = 'true'
+    r = new_tty_responder('multiselect')
+    r.choices([
+      {name:'Premier',  value:10},
+      {name:'Deux',     value:20},
+      {name:'Trois',    value:30},
+      {name:'Quatre',   value:40}
+    ])
+    ENV['CLI_TEST_INPUTS'] = [['1','2','3'],{names:['premier','trois']},{items:[2,4]}, {rname:'re'}, {rnames:['re','oi']}].to_json
+    assert_equal ['1','2','3'], r.response  # explicit
+    assert_equal [10,30], r.response        # with :names
+    assert_equal [20,40], r.response        # with :items
+    assert_equal [10,40], r.response        # with :rname
+    assert_equal [10,30,40], r.response     # with :rnames
   end
 
 

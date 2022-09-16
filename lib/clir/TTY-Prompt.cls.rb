@@ -139,13 +139,34 @@ module TestTTYMethods
         if input.key?('name')
           find_in_choices(/^#{input['name']}$/i).first
         elsif input.key?('rname')
-          find_in_choices(eval(input['rname'])).first
+          find_in_choices(/#{input['rname']}/).first
         elsif input.key?('item') || input.key?('index')
           choices[(input['item']||input['index']) - 1][:value]
         else
           input
         end
     end
+
+    def __multiselect
+      return unless input.is_a?(Hash)
+      @input = 
+        if input.key?('names')
+          find_in_choices(/^(#{input['names'].join('|')})$/i)
+        elsif input.key?('items')
+          input['items'].map { |n| choices[n.to_i - 1][:value] }
+        elsif input.key?('rname')
+          find_in_choices(/#{input['rname']}/i)
+        elsif input.key?('rnames')
+          find_in_choices(/(#{input['rnames'].join('|')})/i)
+        else
+          input
+        end
+    end
+
+    def __yes
+      @input = ['o','y','true',"\n",'1','oui','yes'].include?(input.to_s.downcase)
+    end
+
 
     # --- Usefull methods ---
 
@@ -186,7 +207,7 @@ module TestTTYMethods
     # 
     def choices(vals = nil)
       if vals.nil?
-        return @choices
+        return @choices ||= []
       else
         @choices ||= []
         @choices += vals
