@@ -49,7 +49,7 @@ class TTYPromptTests < Minitest::Test
 
   # --- Test du Responder ---
 
-  def rew_tty_responder(type, question = 'The question?')
+  def new_tty_responder(type, question = 'The question?')
     @tty_responder = nil
     tty_responder(type, question)
   end
@@ -135,13 +135,32 @@ class TTYPromptTests < Minitest::Test
     assert r.respond_to? :response
   end
 
+  # Q.ask test
   def test_tty_responder_response_with_ask
     ENV['CLI_TEST'] = 'true'
-    r = rew_tty_responder('ask')
+    r = new_tty_responder('ask')
     ENV['CLI_TEST_INPUTS'] = ["Marion MIC", 'default'].to_json
     assert_equal "Marion MIC", r.response
     r.default("MIC Marion")
     assert_equal 'MIC Marion', r.response
+  end
+
+  # Q.select test
+  def test_tty_responder_response_with_select
+    ENV['CLI_TEST'] = 'true'
+    r = new_tty_responder('select')
+    r.choices([
+      {name:'Premier', value:1},
+      {name:'Deuxième', value:2},
+      {name:'Troisième', value:3}
+    ])
+    ENV['CLI_TEST_INPUTS'] = ['brute', {name:'Deuxième'}, {item:3}].to_json
+    # Litteral value
+    assert_equal 'brute', r.response
+    # Value by name (item title)
+    assert_equal 2, r.response
+    # Value by index
+    assert_equal 3, r.response
   end
 
 

@@ -133,6 +133,31 @@ module TestTTYMethods
       end
     end
 
+    def __select
+      return unless input.is_a?(Hash)
+      @input =
+        if input.key?('name')
+          find_in_choices(/^#{input['name']}$/i).first
+        elsif input.key?('rname')
+          find_in_choices(eval(input['rname'])).first
+        elsif input.key?('item') || input.key?('index')
+          choices[(input['item']||input['index']) - 1][:value]
+        else
+          input
+        end
+    end
+
+    # --- Usefull methods ---
+
+    # @return all values that match +search+ in choices
+    def find_in_choices(search)
+      @choices.select do |choix|
+        choix[:name].match?(search)
+      end.map do |choix|
+        choix[:value]
+      end
+    end
+
     # @return self Twin TTY method
     # p.e. '__ask' ou '__select'
     def tty_method
