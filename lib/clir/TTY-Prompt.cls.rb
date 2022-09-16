@@ -103,6 +103,9 @@ module TestTTYMethods
   def multi_select(*args, &block)
     response_of('multi_select', *args, &block)
   end
+  def slider(*args, &block)
+    response_of('slider', *args, &block)
+  end
 
 
   # --- Class TestTTYMethods::Responder ---
@@ -130,25 +133,33 @@ module TestTTYMethods
     # value has been given, return the default value)
     def response
       @input  = prompt.next_input
-      treat_special_input_values
-      self.send(tty_method)
+      if treat_special_input_values
+        self.send(tty_method)
+      end
       return input
     end
 
     # --- Special treatment of input values ---
+
+    ##
+    # @return false if no more treatment (no send to tty_method
+    # below)
+    # 
     def treat_special_input_values
       case input.to_s.upcase
       when /CTRL[ _\-]C/, 'EXIT', '^C' then exit 0
+      when 'DEFAULT', 'DÉFAUT'
+        @input = default_value
+        return false
       end
+      return true
     end
 
-    # --- Twin TTY::Prompt methods ---
-    # --- They treat input value as needed ---
+    # --- Twin TTY::Prompt methods            ---
+    # --- They treat input value as required  ---
 
     def __ask
-      if input.is_a?(String) && input.downcase == 'default'
-        @input = default_value
-      end
+      # nothing to do (even default value is treated above)
     end
 
     def __multiline

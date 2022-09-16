@@ -129,6 +129,16 @@ class TTYPromptTests < Minitest::Test
     assert_equal [10,20], res         # by index
   end
 
+  def test_Q_slider_in_test_mode
+    ENV['CLI_TEST'] = 'true'
+    ENV['CLI_TEST_INPUTS'] = ['DEFAULT',10,'13'].to_json
+    CLI.init
+    res = Q.slider("Quelle valeur ?", {default: 12})
+    assert_equal 12, res                          # default value
+    assert_equal 10, Q.slider('Quelle valeur ?')  # explicit value
+    assert_equal 13, Q.slider('Quelle valeur ?')  # alway a number
+  end
+
 
   # --- Test du Responder ---
 
