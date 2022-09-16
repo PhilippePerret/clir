@@ -3,7 +3,7 @@ require "test_helper"
 class TTYPromptTests < Minitest::Test
 
   def test_classes_should_exist
-    assert defined?(TestTTYMethods)
+    assert defined?(InputsTTYMethods)
   end
 
   def test_Q_class_should_exist_and_respond_to_methods
@@ -150,17 +150,17 @@ class TTYPromptTests < Minitest::Test
   def tty_responder(type = 'ask', question = 'What’s your name?')
     @tty_responder ||= begin
       CLI.init
-      TestTTYMethods::Responder.new(Q, type, question)
+      InputsTTYMethods::Responder.new(Q, type, question)
     end
   end
 
   def test_Responder_class_exists
-    assert defined?(TestTTYMethods::Responder)
+    assert defined?(InputsTTYMethods::Responder)
   end
 
   def test_initialisation_Responder
     r = tty_responder
-    assert_equal r.class.name, 'TestTTYMethods::Responder'
+    assert_equal r.class.name, 'InputsTTYMethods::Responder'
   end
 
   def test_responder_respond_to_usual_methods

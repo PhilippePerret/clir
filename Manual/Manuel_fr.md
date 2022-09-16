@@ -1,4 +1,18 @@
-# Manuel du gem `chir`
+# Manuel du gem `clir`
+
+~~~ruby
+require 'clir'
+~~~
+
+## L'application
+
+### Rejouer une commande (mode `Replayer`)
+
+Pour rejouer une commande — pas seulement la commmande mais aussi toutes les entrées qui ont été faites — on joue juste `app _`.
+
+> Attention : il faut vraiment qu'il n'y ait que '\_' après la commande et rien d'autre, même pas une option.
+
+C'est une commande particulièrement utile quand on teste l'application car elle évite d'avoir à retaper chaque fois les commandes et les options.
 
 ## CLI Tests
 

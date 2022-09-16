@@ -15,7 +15,6 @@
 require 'tty-prompt'
 require 'json'
 
-
 module TTY
   class MyPrompt < Prompt
 
@@ -30,12 +29,12 @@ module TTY
     # Méthode qui fait basculer du mode normal au mode test et
     # inversement.
     def toggle_mode
-      if test?
+      if test? || CLI::Replayer.on?
         # 
-        # Use tests methods instead of usual methods
+        # Use Inputs methods instead of usual methods
         # (overwrite them)
         # 
-        self.class.include TestTTYMethods
+        self.class.include InputsTTYMethods
       else
         # 
         # Usual methods
@@ -55,7 +54,7 @@ end
 # module so it can respond to Q.<method> and return the 'inputs'
 # defined in CLITests for user interaction.
 # 
-module TestTTYMethods
+module InputsTTYMethods
 
   ##
   # Error class raised when there's no more input values to
@@ -69,6 +68,8 @@ module TestTTYMethods
     @inputs ||= begin
       if ENV['CLI_TEST_INPUTS']
         JSON.parse ENV['CLI_TEST_INPUTS']
+      elsif CLI::Replayer.inputs
+        CLI::Replayer.inputs
       else
         []
       end
@@ -108,7 +109,7 @@ module TestTTYMethods
   end
 
 
-  # --- Class TestTTYMethods::Responder ---
+  # --- Class InputsTTYMethods::Responder ---
 
   class Responder
 
@@ -307,7 +308,7 @@ module TestTTYMethods
 
   end #/class Responder
 
-end #/module TestTTYMethods
+end #/module InputsTTYMethods
 
 Q = TTY::MyPrompt.new(symbols: {radio_on:"☒", radio_off:"☐"})
 

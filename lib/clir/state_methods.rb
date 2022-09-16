@@ -16,13 +16,6 @@ def help?
   Clir::State.help?
 end
 
-
-def true_or_false(value)
-   value ? :TRUE : :FALSE
-end
-
-
-
 module Clir
 class State
 class << self 
