@@ -37,6 +37,21 @@ class TTYPromptTests < Minitest::Test
     assert_equal ['A','B','C'], Q.inputs
   end
 
+  # --- Test des différentes méthodes de premier niveau ---
+  #     (=> utilisé dans le programme, comme Q.ask)
+
+  # Inputs permettant d'interrompre le programme
+  def test_Q_interrupt_in_test_mode
+    ENV['CLI_TEST'] = 'true'
+    ENV['CLI_TEST_INPUTS'] = ["Marion Mic", 'CTRL-C'].to_json
+    CLI.init
+    Q.ask("What's your name?")
+    assert_raises SystemExit do 
+      Q.ask("What's your âge")
+    end
+  end
+
+  # Q.ask test
   def test_Q_ask_method_in_test_mode
     ENV['CLI_TEST'] = 'true'
     ENV['CLI_TEST_INPUTS'] = ["Marion Mic"].to_json
@@ -44,6 +59,74 @@ class TTYPromptTests < Minitest::Test
     res = Q.ask("What's your name?")
     assert_match "Marion", res
     assert res == 'Marion Mic'
+  end
+
+  # Q.multiline test
+  def test_Q_multiline_method_in_test_mode
+    ENV['CLI_TEST'] = 'true'
+    texte = "Marion Mic\nVit avec\nPhil"
+    ENV['CLI_TEST_INPUTS'] = [texte, '^D'].to_json
+    CLI.init
+    res = Q.multiline("Avec qui vit-elle (menthe) ?")
+    assert_equal texte, res
+    res = Q.multiline("Are you sur?")
+    assert_empty res
+  end
+
+  # Q.select test
+  def test_Q_select_in_test_mode
+    ENV['CLI_TEST'] = 'true'
+    ENV['CLI_TEST_INPUTS'] = ['Troisième',{name:'Premier'},{rname:'emi'},{item:2},{index:1}].to_json
+    CLI.init
+    proc = Proc.new { 
+      Q.select("Quel est votre choix") do |q|
+        q.choices [{name:'Premier', value:'1er'}, {name:'Deuxième',value:'2e'}]
+      end
+    }
+    res = proc.call
+    assert_equal 'Troisième', res # by explicit value
+    res = proc.call
+    assert_equal '1er', res       # by :name
+    res = proc.call
+    assert_equal '1er', res       # by :rname
+    res = proc.call
+    assert_equal '2e', res        # by :item
+    res = proc.call
+    assert_equal '1er', res       # by :index
+  end
+
+  # Q.multi_select test
+  def test_Q_multiselect_in_test_mode
+    ENV['CLI_TEST'] = 'true'
+    ENV['CLI_TEST_INPUTS'] = [
+      ['Troisième'],
+      {names:['premier','deuxième']},
+      {rname:'iè'},
+      {rnames:['o','a']},
+      {items:[4,2,1]},
+      {index:[1,2]}
+    ].to_json
+    CLI.init
+    proc = Proc.new { 
+      Q.multi_select("Quels sont vos choix") do |q|
+        q.choice 'Premier',   10
+        q.choice 'Deuxième',  20
+        q.choice 'Troisième', 30
+        q.choice 'Quatrième', 40
+      end
+    }
+    res = proc.call
+    assert_equal ['Troisième'], res   # explicit value
+    res = proc.call
+    assert_equal [10,20], res         # by menu names
+    res = proc.call
+    assert_equal [20,30,40], res      # by menu reg-name
+    res = proc.call
+    assert_equal [30,40], res         # by menu reg-names
+    res = proc.call
+    assert_equal [40,20,10], res      # by items
+    res = proc.call
+    assert_equal [10,20], res         # by index
   end
 
 
@@ -107,7 +190,7 @@ class TTYPromptTests < Minitest::Test
 
   ##
   # Pour vérifier que Q.next_input retourne bien la prochaine
-  # valeur entrée ou génère une erreur.
+  # valeur entrée ou génère l'erreur voulue.
   def test_tty_next_input_method
     ENV['CLI_TEST'] = 'true'
     ENV['CLI_TEST_INPUTS'] = nil
@@ -123,6 +206,7 @@ class TTYPromptTests < Minitest::Test
     assert_equal 'C', Q.next_input
     assert_raises { Q.next_input }
   end
+
 
   ##
   # Pour vérifier que la méthode Responder#evaluate, qui 
@@ -143,6 +227,19 @@ class TTYPromptTests < Minitest::Test
     assert_equal "Marion MIC", r.response
     r.default("MIC Marion")
     assert_equal 'MIC Marion', r.response
+  end
+
+  # Q.multiline test
+  def test_tty_responder_response_with_multiline
+    ENV['CLI_TEST'] = 'true'
+    r = new_tty_responder('multiline')
+    texte = "Plusieurs\nlignes\nPour voir"
+    ENV['CLI_TEST_INPUTS'] = [texte, "CTRL_D", "CTRL-D", "CTRL D","^D"].to_json
+    assert_equal texte, r.response  # texte explicite
+    assert_equal '', r.response     # CTRL_D
+    assert_equal '', r.response     # CTRL D
+    assert_equal '', r.response     # CTRL-D
+    assert_equal '', r.response     # ^D
   end
 
   # Q.select test
@@ -187,7 +284,7 @@ class TTYPromptTests < Minitest::Test
   # Q.multiselect test
   def test_tty_responder_response_with_multiselect
     ENV['CLI_TEST'] = 'true'
-    r = new_tty_responder('multiselect')
+    r = new_tty_responder('multi_select')
     r.choices([
       {name:'Premier',  value:10},
       {name:'Deux',     value:20},
@@ -202,5 +299,12 @@ class TTYPromptTests < Minitest::Test
     assert_equal [10,30,40], r.response     # with :rnames
   end
 
-
+  # Q.slider test
+  def test_tty_responder_response_with_slider
+    ENV['CLI_TEST'] = 'true'
+    r = new_tty_responder('slider')
+    ENV['CLI_TEST_INPUTS'] = ['10', 20].to_json
+    assert_equal 10, r.response
+    assert_equal 20, r.response
+  end
 end

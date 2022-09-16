@@ -87,11 +87,21 @@ module TestTTYMethods
     end
   end
 
-  def ask(*args, &block)
-    Responder.new(self, 'ask', *args, &block).response
+  def response_of(type, *args, &block)
+    Responder.new(self, type, *args, &block).response
   end
-  def select(*)
-    puts "Je suis le select utilisé en mode test"
+
+  def ask(*args, &block)
+    response_of('ask', *args, &block)
+  end
+  def multiline(*args, &block)
+    response_of('multiline', *args, &block)
+  end
+  def select(*args, &block)
+    response_of('select', *args, &block)
+  end
+  def multi_select(*args, &block)
+    response_of('multi_select', *args, &block)
   end
 
 
@@ -120,8 +130,16 @@ module TestTTYMethods
     # value has been given, return the default value)
     def response
       @input  = prompt.next_input
+      treat_special_input_values
       self.send(tty_method)
       return input
+    end
+
+    # --- Special treatment of input values ---
+    def treat_special_input_values
+      case input.to_s.upcase
+      when /CTRL[ _\-]C/, 'EXIT', '^C' then exit 0
+      end
     end
 
     # --- Twin TTY::Prompt methods ---
@@ -130,6 +148,12 @@ module TestTTYMethods
     def __ask
       if input.is_a?(String) && input.downcase == 'default'
         @input = default_value
+      end
+    end
+
+    def __multiline
+      case input
+      when /CTRL[ _\-]D/, '^D' then @input = ''
       end
     end
 
@@ -147,13 +171,13 @@ module TestTTYMethods
         end
     end
 
-    def __multiselect
+    def __multi_select
       return unless input.is_a?(Hash)
       @input = 
         if input.key?('names')
           find_in_choices(/^(#{input['names'].join('|')})$/i)
-        elsif input.key?('items')
-          input['items'].map { |n| choices[n.to_i - 1][:value] }
+        elsif input.key?('items') || input.key?('index')
+          (input['items']||input['index']).map { |n| choices[n.to_i - 1][:value] }
         elsif input.key?('rname')
           find_in_choices(/#{input['rname']}/i)
         elsif input.key?('rnames')
@@ -167,6 +191,9 @@ module TestTTYMethods
       @input = ['o','y','true',"\n",'1','oui','yes'].include?(input.to_s.downcase)
     end
 
+    def __slider
+      @input = input.to_i
+    end
 
     # --- Usefull methods ---
 
