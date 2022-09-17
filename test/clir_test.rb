@@ -10,6 +10,12 @@ class ClirTest < Minitest::Test
     assert CLI.respond_to?(:parse)
   end
 
+  def test_clir_parse_command_name
+    assert defined?(CLI)
+    assert_respond_to CLI, :command_name
+    assert_equal 'rake_test_loader', CLI.command_name
+  end
+
   def test_cli_parse_main_command
     CLI.parse("main_command -optionone --optiontwo -optionval=val firstcomp param=valeur -l".split(' '))
     assert CLI.main_command == 'main_command'

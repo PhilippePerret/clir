@@ -29,7 +29,7 @@ module TTY
     # Méthode qui fait basculer du mode normal au mode test et
     # inversement.
     def toggle_mode
-      if test? || CLI::Replayer.on?
+      if CLI::Replayer.on? || test?
         # 
         # Use Inputs methods instead of usual methods
         # (overwrite them)
@@ -40,12 +40,40 @@ module TTY
         # Usual methods
         # (overwrite tests method if any)
         # 
-        self.class.include TTY
+        self.class.include ReplayedTTYMethods::ReplayedPrompt
       end
     end
 
   end #/class MyPrompt
 end
+
+##
+# Regular methods with replay possibilities
+# 
+module ReplayedTTYMethods
+class ReplayedPrompt < TTY::Prompt
+  def select(*)
+    eval(code_super(CLI::Replayer.on?))
+  end
+
+  ##
+  # @return method code to evaluate super (if replayer is
+  # off) or to get input (if replayer is on)
+  def code_super(on)
+    CODE_SUPER_OR_GET_INPUT % {truth: on ? 'true' : 'false'}
+  end
+  CODE_SUPER_OR_GET_INPUT = <<~RUBY
+  if %{truth}
+    CLI::Replayer.get_input
+  else
+    super.tap do |result|
+      CLI::Replayer.add_input(result)
+    end
+  end
+  RUBY
+
+end #/class ReplayedPrompt
+end #/module ReplayedTTYMethods
 
 ##
 # Tests methods for TTY::Prompt

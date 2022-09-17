@@ -36,6 +36,18 @@ class << self
   end
 
   ##
+  # Command name
+  #
+  # Don't confuse with 'main command' which is the very first
+  # argument in command line
+  #
+  def command_name
+    @command_name ||= begin
+      File.basename($PROGRAM_NAME,File.extname($PROGRAM_NAME))
+    end
+  end
+
+  ##
   # Main method which parse command line to get:
   # - main command
   # - options (leadings with -/--)
@@ -43,22 +55,34 @@ class << self
   # 
   def parse(argv)
     argv = argv.split(' ') if argv.is_a?(String)
-    reset
-    argv.each do |arg|
-      if arg.start_with?('--')
-        arg, val = key_and_value_in(arg[2..-1])
-        @options.merge!(arg.to_sym => val)
-      elsif arg.start_with?('-')
-        arg, val = key_and_value_in(arg[1..-1])
-        arg = long_option_for(arg)
-        @options.merge!(arg.to_sym => val)
-      elsif arg.match?('.=.')
-        key, val = key_and_value_in(arg)
-        @params.merge!(key.to_sym => val)
-      elsif @main_command.nil?
-        @main_command = arg
-      else
-        @components << arg
+    if replay_it?(argv)
+      # 
+      # Replay last command (if unable)
+      # 
+      puts "Je dois apprendre à replayer la commande précédente".jaune
+      puts "Pour ça, je dois enregistrer les inputs précédents.".jaune
+    else
+      # 
+      # Regular run
+      # 
+      reset
+      raw_command_line = ([command_name]+argv).join(' ')
+      argv.each do |arg|
+        if arg.start_with?('--')
+          arg, val = key_and_value_in(arg[2..-1])
+          @options.merge!(arg.to_sym => val)
+        elsif arg.start_with?('-')
+          arg, val = key_and_value_in(arg[1..-1])
+          arg = long_option_for(arg)
+          @options.merge!(arg.to_sym => val)
+        elsif arg.match?('.=.')
+          key, val = key_and_value_in(arg)
+          @params.merge!(key.to_sym => val)
+        elsif @main_command.nil?
+          @main_command = arg
+        else
+          @components << arg
+        end
       end
     end
   end
@@ -67,10 +91,29 @@ class << self
     @_app_options_table = table
   end
 
+  ##
+  # For Replayer, return data
+  def get_command_line_data
+    {
+      raw_command_line: raw_command_line,
+      command_name:     command_name,
+      main_command:     main_command,
+      components:       components,
+      options:          options,
+      params:           params,
+      table_short2long_options:  table_short2long_options
+    }
+  end
+
+  def set_command_line_data(data)
+    data.each do |k, v| instance_variable_set("@#{k}", v) end
+  end
+
   private
 
     def reset
       Clir::State.reset
+      CLI::Replayer.init_for_recording
       @table_short2long_options = nil
       @main_command = nil
       @components   = [] 
@@ -118,5 +161,11 @@ class << self
       foo.match?('=') ? foo.split('=') : [foo, default]
     end
 
+    ##
+    # @return TRUE if replay character is used and only
+    # replay character
+    def replay_it?(argv)
+      argv.count == 1 && argv[0] == Config[:replay_character]
+    end
 end #/<< self CLI
 end #/module CLI
