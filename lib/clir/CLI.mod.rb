@@ -30,7 +30,7 @@ class << self
   # 
   def init
     parse(ARGV)
-    Q.init
+    Q.init if Q.respond_to?(:init)
   end
 
   ##

@@ -4,7 +4,7 @@
   plus tard on pourra la modifier pour chaque application.
 
 =end
-module CLIR
+module Clir
 class Configuration
 
   def [](key)
@@ -22,4 +22,4 @@ end #/class Configuration
 end #/module CLIR
 
 # Expose outside
-Config = Configuration.new
+Config = Clir::Configuration.new

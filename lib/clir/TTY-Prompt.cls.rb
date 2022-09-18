@@ -40,7 +40,7 @@ module TTY
         # Usual methods
         # (overwrite tests method if any)
         # 
-        self.class.include ReplayedTTYMethods::ReplayedPrompt
+        self.class.include ReplayedTTYMethods #::ReplayedPrompt
       end
     end
 
@@ -52,9 +52,9 @@ end
 # 
 module ReplayedTTYMethods
 class ReplayedPrompt < TTY::Prompt
-  def select(*)
-    eval(code_super(CLI::Replayer.on?))
-  end
+  # def select(*)
+  #   eval(code_super(CLI::Replayer.on?))
+  # end
 
   ##
   # @return method code to evaluate super (if replayer is
@@ -338,5 +338,6 @@ module InputsTTYMethods
 
 end #/module InputsTTYMethods
 
-Q = TTY::MyPrompt.new(symbols: {radio_on:"☒", radio_off:"☐"})
+# Q = TTY::MyPrompt.new(symbols: {radio_on:"☒", radio_off:"☐"})
+Q = TTY::Prompt.new(symbols: {radio_on:"☒", radio_off:"☐"})
 
