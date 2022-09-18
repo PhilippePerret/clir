@@ -61,6 +61,7 @@ class << self
       load.tap do |table|
         CLI.set_command_line_data(table[:data])
       end
+    end
   end
 
   def load

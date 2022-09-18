@@ -24,8 +24,6 @@
 module CLI
 class << self
 
-  attr_reader :main_command, :options, :params, :components
-
   ##
   # First class method
   # (call it at start-up)
@@ -34,6 +32,43 @@ class << self
     parse(ARGV)
     Q.init
   end
+
+  ##
+  # @return command line options
+  # @options is set while parse method. If it is not set, we
+  # CLI.init first.
+  # 
+  def options
+    @options || self.init
+    @options
+  end
+
+  ##
+  # @main command (after command name)
+  def main_command
+    @main_command || self.init
+    @main_command
+  end
+
+  ##
+  # @return command line parameters
+  # 
+  def params
+    @params || self.init
+    @params
+  end
+
+  ##
+  # @return command line components
+  # 'components' are elements of command line that are not options
+  # (with leading '-'), that are not parameters (key=value paire) and
+  # that are not main_command
+  # 
+  def components
+    @components || self.init
+    @components
+  end
+
 
   ##
   # Command name
@@ -165,7 +200,7 @@ class << self
     # @return TRUE if replay character is used and only
     # replay character
     def replay_it?(argv)
-      argv.count == 1 && argv[0] == Config[:replay_character]
+      argv.count == 1 && argv[0] == ::Config[:replay_character]
     end
 end #/<< self CLI
 end #/module CLI
