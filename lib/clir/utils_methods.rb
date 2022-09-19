@@ -9,6 +9,14 @@ def mkdir(pth)
 end
 
 ##
+# To copy in the clipboard
+# 
+def clip(ca, silent = false)
+  `printf "#{ca.gsub(/"/, '\\"').strip}" | pbcopy`
+  silent || puts("\n(“#{ca}“ copié dans le presse-papier)".gris)
+end
+
+##
 # To delete (unlink) folder of file if it exists
 # 
 # @return TRUE if file existed (and have been deleted).

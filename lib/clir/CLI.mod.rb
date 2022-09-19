@@ -147,13 +147,13 @@ class << self
   private
 
     def reset
-      Clir::State.reset
-      CLI::Replayer.init_for_recording
-      @table_short2long_options = nil
       @main_command = nil
       @components   = [] 
       @options      = {}
       @params       = {}
+      Clir::State.reset
+      CLI::Replayer.init_for_recording
+      @table_short2long_options = nil
     end
 
     ##
