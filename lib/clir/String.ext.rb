@@ -3,6 +3,15 @@
 =end
 
 class String
+  def strike
+    "\033[9m#{self}\033[0m"
+  end
+  def underline
+    "\033[4m#{self}\033[0m"
+  end
+  def italic
+    "\033[3m#{self}\033[0m"
+  end
   def bleu
     "\033[0;96m#{self}\033[0m"
   end

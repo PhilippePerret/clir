@@ -1,6 +1,13 @@
 # require 'fileutils'
 
 ##
+# Require all ruby file deep in folder +dossier+
+# 
+def require_folder(dossier)
+  Dir["#{dossier}/**/*.rb"].each{|m|require(m)}
+end
+
+##
 # Like 'mkdir -p' command
 # 
 def mkdir(pth)
