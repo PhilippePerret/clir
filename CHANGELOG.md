@@ -1,3 +1,9 @@
+0.1.7
+  Ajout de la méthode utile 'formate_date'
+0.1.6
+  Ajout de la couleur vert clair (ligth_green, vert_clair)
+0.1.5
+  Ajout des méthode CLI.option(key) et CLI.param(key)
 0.1.4
   Ajout de la méthode 'require_folder' qui requiert tous les scripts
   ruby d'un dossier donné en argument.

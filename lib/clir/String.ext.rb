@@ -22,6 +22,11 @@ class String
   end
   alias :green :vert
 
+  def vert_clair
+    "\033[0;32m#{self}\033[0m"
+  end
+  alias :ligth_green :vert_clair
+
   def rouge
     "\033[0;91m#{self}\033[0m"
   end

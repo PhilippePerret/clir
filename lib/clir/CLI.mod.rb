@@ -13,6 +13,7 @@
 
     CLI.main_command
     CLI.options[:<key>]
+    CLI.option(:key)
     CLI.params[:<key>]
     CLI.components[<index>]
 
@@ -43,6 +44,11 @@ class << self
     @options
   end
 
+  # @return option of key +key+
+  def option(key)
+    options[key.to_sym]
+  end
+
   ##
   # @main command (after command name)
   def main_command
@@ -56,6 +62,10 @@ class << self
   def params
     @params || self.init
     @params
+  end
+
+  def param(key)
+    params[key.to_sym]
   end
 
   ##

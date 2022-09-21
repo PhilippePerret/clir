@@ -16,6 +16,31 @@ def mkdir(pth)
 end
 
 ##
+# Formate de date as JJ MM AAAA (or MM JJ AAAA in english)
+# @param {Time} date
+# @param {Hash} Options table:
+#   :no_time    Juste day, without time
+#   :seconds    Add seconds with time
+#   :update_format    If true, the format is updated. Otherwise, the
+#                     last format is used for all next date
+#   :sentence   Si true, on met "le ... à ...."
+# 
+def formate_date(date, options = nil)
+  options ||= {}
+  @last_format = nil if options[:update_format]
+  @last_format ||= begin
+    fmt = []
+    fmt << 'le ' if options[:sentence]
+    fmt << '%d %m %Y'
+    delh = options[:sentence] ? 'à' : '-'
+    fmt << " #{delh} %H:%M" unless options[:no_time]
+    fmt << ':%S' if options[:seconds]
+    fmt.join('')
+  end
+  date.strftime(@last_format)
+end
+
+##
 # To copy in the clipboard
 # 
 def clip(ca, silent = false)
