@@ -53,7 +53,7 @@ class << self
       inputs:       inputs,
       data:         CLI::get_command_line_data
     }
-    File.write(last_command_file, Marshal.dump(inputs))
+    File.write(last_command_file, Marshal.dump(table_replay))
   end
 
   def data

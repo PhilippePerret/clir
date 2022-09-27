@@ -7,12 +7,12 @@
 # To wach (empty) the console
 def clear
   puts "\n" # pour certaines méthodes
-  puts "\033c"
+  STDOUT.write "\033c"
 end
 
 # Write +str+ at column +column+ and line +line+
 def write_at(str, line, column)
-  puts "\e[#{line};#{column}H#{str}"
+  STDOUT.write "\e[#{line};#{column}H#{str}"
 end
 
 

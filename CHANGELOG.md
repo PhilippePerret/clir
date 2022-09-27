@@ -1,3 +1,7 @@
+0.1.9
+  Ajout de la méthode Array#pretty_join
+0.1.8
+  Amélioration de 'clear' (qui sautait une ligne)
 0.1.7
   Ajout de la méthode utile 'formate_date'
 0.1.6

@@ -12,6 +12,12 @@ class String
   def italic
     "\033[3m#{self}\033[0m"
   end
+
+  def blanc
+    "#{self}"
+  end
+  alias :white :blanc
+  
   def bleu
     "\033[0;96m#{self}\033[0m"
   end

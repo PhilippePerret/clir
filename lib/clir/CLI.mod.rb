@@ -40,7 +40,7 @@ class << self
   # CLI.init first.
   # 
   def options
-    @options || self.init
+    defined?(@options) || self.init
     @options
   end
 
@@ -111,7 +111,7 @@ class << self
       # Regular run
       # 
       reset
-      raw_command_line = ([command_name]+argv).join(' ')
+      @raw_command_line = ([command_name]+argv).join(' ')
       argv.each do |arg|
         if arg.start_with?('--')
           arg, val = key_and_value_in(arg[2..-1])
@@ -140,7 +140,7 @@ class << self
   # For Replayer, return data
   def get_command_line_data
     {
-      raw_command_line: raw_command_line,
+      raw_command_line: @raw_command_line,
       command_name:     command_name,
       main_command:     main_command,
       components:       components,
