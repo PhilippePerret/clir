@@ -1,5 +1,5 @@
-0.1.9
-  Ajout de la méthode Array#pretty_join
+0.2.0
+  Ajout de méthode String (as_title, columnize, etc.)
 0.1.8
   Amélioration de 'clear' (qui sautait une ligne)
 0.1.7

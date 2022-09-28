@@ -3,6 +3,69 @@
 =end
 
 class String
+
+  def self.columnize(lines, delimitor = ',', gutter: '    ')
+    # lines = lines.join("\n") if lines.is_a?(Array)
+    lines = lines.split("\n") if lines.is_a?(String)
+    # 
+    # Nombre de colonnes
+    # 
+    nombre_colonnes = 0
+    colonnes_widths = []
+    lines = lines.map do |line|
+      line.strip.split(delimitor).map {|e| e.strip}
+    end.each do |line|
+      nb = line.count # nombre de colonnes
+      nombre_colonnes = nb if nb > nombre_colonnes
+    end
+    # 
+    # On met le même nombre de colonnes à toutes les lignes
+    # 
+    lines.map do |line|
+      while line.count < nombre_colonnes
+        line << ''
+      end
+      line
+    end.each do |line|
+      line.each_with_index do |str, col_idx|
+        colonnes_widths[col_idx] = 0 if colonnes_widths[col_idx].nil?
+        colonnes_widths[col_idx] = str.length if str.length > colonnes_widths[col_idx]
+      end
+    end.each do |line|
+      # 
+      # Mettre toutes les colonnes à la même taille
+      # 
+      line.each_with_index do |str, col_idx|
+        line[col_idx] = str.ljust(colonnes_widths[col_idx])
+      end
+    end
+
+    puts "lines: #{lines.inspect}"
+    lines.map do |line|
+      line.join(gutter)
+    end.join("\n").strip
+    
+  end
+
+
+  # Si le texte est :
+  # 
+  #       Mon titre
+  # 
+  # … cette méthode retourne :
+  # 
+  #       Mon titre
+  #       ---------
+  # 
+  # 
+  def as_title(sous = '=', indent = 2)
+    len = self.length
+    ind = ' ' * indent
+    del = ind + sous * (len + 2)
+    "\n#{del}\n#{ind} #{self.upcase}\n#{del}"
+  end
+
+
   def strike
     "\033[9m#{self}\033[0m"
   end
@@ -12,6 +75,8 @@ class String
   def italic
     "\033[3m#{self}\033[0m"
   end
+
+
 
   def blanc
     "#{self}"

@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ClirColorTest < Minitest::Test
+class ClirStringExtensionTest < Minitest::Test
 
 
   # --- TEST DES COULEURS ---
@@ -39,4 +39,34 @@ class ClirColorTest < Minitest::Test
     assert_equal "\033[38;5;214mMon essai\033[0m", 'Mon essai'.orange
   end
   
-end
+  def test_as_title
+    assert_equal "\n  ===========\n   MON TITRE\n  ===========", "Mon Titre".as_title
+    assert_equal "\n-----------\n MON TITRE\n-----------", "Mon Titre".as_title('-', 0)
+  end
+
+  def test_columnize_class_method
+    # -- avec un string --
+    string = "Pour voir ce,que ça donne\nEn colonnisant,le texte"
+    actual = String.columnize(string)
+    expect = <<~TEXT.strip
+    Pour voir ce      que ça donne
+    En colonnisant    le texte
+    TEXT
+    assert_equal expect, actual
+
+    string = "A1, B1, C1, D1\nA2,B2,Cdeux,D2\nAtrois, B3, C3,D3"
+    actual = String.columnize(string)
+    expect = <<~TEXT.strip
+    A1        B1    C1       D1
+    A2        B2    Cdeux    D2
+    Atrois    B3    C3       D3
+    TEXT
+    assert_equal actual, expect
+  end
+
+  def test_columnize_class_method_with_params
+    # Test de columnize avec des paramètres
+    assert false # le programmer 
+  end
+
+end #class ClirStringExtensionTest
