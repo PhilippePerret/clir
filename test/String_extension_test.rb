@@ -64,9 +64,26 @@ class ClirStringExtensionTest < Minitest::Test
     assert_equal actual, expect
   end
 
-  def test_columnize_class_method_with_params
-    # Test de columnize avec des paramètres
-    assert false # le programmer 
+  def test_columnize_class_method_with_other_delimiter
+    string = "A1\t B1\t C1\t D1\nA2\tB2\tCdeux\tD2\nAtrois\t B3\t C3\tD3"
+    actual = String.columnize(string, "\t")
+    expect = <<~TEXT.strip
+    A1        B1    C1       D1
+    A2        B2    Cdeux    D2
+    Atrois    B3    C3       D3
+    TEXT
+    assert_equal actual, expect
+  end
+
+  def test_columnize_class_method_with_other_gutter
+    string = "A1\t B1\t C1\t D1\nA2\tB2\tCdeux\tD2\nAtrois\t B3\t C3\tD3"
+    actual = String.columnize(string, "\t", '--')
+    expect = <<~TEXT.strip
+    A1    --B1--C1   --D1
+    A2    --B2--Cdeux--D2
+    Atrois--B3--C3   --D3
+    TEXT
+    assert_equal actual, expect
   end
 
 end #class ClirStringExtensionTest

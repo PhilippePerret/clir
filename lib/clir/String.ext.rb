@@ -4,7 +4,7 @@
 
 class String
 
-  def self.columnize(lines, delimitor = ',', gutter: '    ')
+  def self.columnize(lines, delimitor = ',', gutter = '    ')
     # lines = lines.join("\n") if lines.is_a?(Array)
     lines = lines.split("\n") if lines.is_a?(String)
     # 
@@ -40,7 +40,6 @@ class String
       end
     end
 
-    puts "lines: #{lines.inspect}"
     lines.map do |line|
       line.join(gutter)
     end.join("\n").strip
@@ -75,7 +74,6 @@ class String
   def italic
     "\033[3m#{self}\033[0m"
   end
-
 
 
   def blanc
