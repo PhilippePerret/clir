@@ -1,3 +1,5 @@
+0.2.1
+  'less' pour les tests (on écrit directement le texte)
 0.2.0
   Ajout de méthode String (as_title, columnize, etc.)
 0.1.8

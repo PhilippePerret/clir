@@ -6,13 +6,18 @@
 
 # To wach (empty) the console
 def clear
-  puts "\n" # pour certaines méthodes
-  STDOUT.write "\033c"
+  # puts "\n" # pour certaines méthodes
+  STDOUT.write "\n\033c"
 end
 
 # Write +str+ at column +column+ and line +line+
 def write_at(str, line, column)
-  STDOUT.write "\e[#{line};#{column}H#{str}"
+  msg = "\e[#{line};#{column}H#{str}"
+  if test?
+    puts msg
+  else
+    STDOUT.write msg
+  end
 end
 
 
@@ -28,6 +33,10 @@ end
 
 # Use 'less' command to display +texte+
 def less(texte)
-  exec "echo \"#{texte.gsub(/\"/,'\\"')}\" | less -r"
+  if help?
+    puts texte
+  else
+    exec "echo \"#{texte.gsub(/\"/,'\\"')}\" | less -r"
+  end
 end
 
