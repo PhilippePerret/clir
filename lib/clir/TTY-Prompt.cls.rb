@@ -338,6 +338,6 @@ module InputsTTYMethods
 
 end #/module InputsTTYMethods
 
-# Q = TTY::MyPrompt.new(symbols: {radio_on:"☒", radio_off:"☐"})
-Q = TTY::Prompt.new(symbols: {radio_on:"☒", radio_off:"☐"})
+Q = TTY::MyPrompt.new(symbols: {radio_on:"☒", radio_off:"☐"})
+# Q = TTY::Prompt.new(symbols: {radio_on:"☒", radio_off:"☐"})
 

@@ -1,3 +1,5 @@
+0.3.0
+  Remise de TTY-MyPrompt
 0.2.1
   'less' pour les tests (on écrit directement le texte)
 0.2.0
