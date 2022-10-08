@@ -1,3 +1,5 @@
+0.3.1
+  Ajout des méthodes TTY-Prompt yes? et no?
 0.3.0
   Remise de TTY-MyPrompt
 0.2.1

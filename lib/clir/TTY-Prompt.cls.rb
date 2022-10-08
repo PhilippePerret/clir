@@ -123,6 +123,12 @@ module InputsTTYMethods
   def ask(*args, &block)
     response_of('ask', *args, &block)
   end
+  def yes?(*args, &block)
+    response_of('yes', *args, &block)
+  end
+  def no?(*args, &block)
+    response_of('no', *args, &block)
+  end
   def multiline(*args, &block)
     response_of('multiline', *args, &block)
   end
@@ -229,6 +235,10 @@ module InputsTTYMethods
 
     def __yes
       @input = ['o','y','true',"\n",'1','oui','yes'].include?(input.to_s.downcase)
+    end
+    def __no
+      self.__yes
+      @input = !@input 
     end
 
     def __slider
