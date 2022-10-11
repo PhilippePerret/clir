@@ -46,6 +46,20 @@ class String
     
   end
 
+  # @return TRUE if +ary+, as a String or an Array, includes
+  # self. If it's an Hash, has key self.
+  def in?(ary)
+    case ary
+    when Array
+      ary.include?(self)
+    when String
+      ary.match?(self)
+    when Hash
+      ary.key?(self)
+    else
+      raise "in? waits for a String or a Array. Given: #{ary.class}."
+    end
+  end
 
   # Si le texte est :
   # 

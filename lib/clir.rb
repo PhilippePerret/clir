@@ -13,6 +13,7 @@ require "clir/version"
 require 'clir/String.ext'
 require 'clir/CLI.mod'
 require 'clir/Array.ext'
+require 'clir/Integer.ext'
 require 'clir/Config.cls'
 require 'clir/utils_methods'
 require 'clir/helpers_methods'

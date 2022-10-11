@@ -86,4 +86,13 @@ class ClirStringExtensionTest < Minitest::Test
     assert_equal actual, expect
   end
 
+  def test_method_in?
+    str = "Bonjour"
+    assert_respond_to str, :in?
+    assert "Bonjour".in?("Bonjour tout le monde !")
+    refute "Bonjour".in?("Il n'y a personne ici")
+    assert "Bonjour".in?(['Bonjour','Tout','Le','Monde'])
+    refute 'Bonjour'.in?(['bonjour','bONJOUR'])
+  end
+
 end #class ClirStringExtensionTest

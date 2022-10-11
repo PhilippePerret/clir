@@ -1,3 +1,5 @@
+0.4.0
+  Ajout des méthodes in? pour String et Integer
 0.3.1
   Ajout des méthodes TTY-Prompt yes? et no?
 0.3.0
