@@ -1,3 +1,5 @@
+0.4.1
+  Ajout de la méthode in? pour les Symbols
 0.4.0
   Ajout des méthodes in? pour String et Integer
 0.3.1

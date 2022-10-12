@@ -1,15 +1,15 @@
-class Integer
+class Symbol
 
   # @return TRUE if self is inside +ary+ or has key self
   # @param ary {Range|Array|Hash}
   def in?(ary)
     case ary
-    when Array, Range
+    when Array
       ary.include?(self)
     when Hash
       ary.key?(self)
     else
-      raise "Integer#in? waits for a Array, an Hash or a Range. Given: #{ary.class}."
+      raise "Symbol#in? waits for a Array or an Hash. Given: #{ary.class}."
     end
   end
 

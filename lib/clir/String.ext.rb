@@ -57,7 +57,7 @@ class String
     when Hash
       ary.key?(self)
     else
-      raise "in? waits for a String or a Array. Given: #{ary.class}."
+      raise "in? waits for a String, an Hash or a Array. Given: #{ary.class}."
     end
   end
 
