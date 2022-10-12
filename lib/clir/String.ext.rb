@@ -46,6 +46,11 @@ class String
     
   end
 
+  # @return TRUE is +str+ is a number (integer or float) in a string.
+  def numeric?
+    self.match?(/^[0-9.]+$/)
+  end
+
   # @return TRUE if +ary+, as a String or an Array, includes
   # self. If it's an Hash, has key self.
   def in?(ary)

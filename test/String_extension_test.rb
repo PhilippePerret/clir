@@ -95,4 +95,16 @@ class ClirStringExtensionTest < Minitest::Test
     refute 'Bonjour'.in?(['bonjour','bONJOUR'])
   end
 
+  def test_method_numeric?
+    str = "Bonjour"
+    assert_respond_to str, :numeric?
+    refute str.numeric?
+    assert "12".numeric?
+    assert "12.3".numeric?
+    refute "12,3".numeric?
+    assert "0".numeric?
+    refute "b23".numeric?
+    refute "12b".numeric?
+  end
+
 end #class ClirStringExtensionTest

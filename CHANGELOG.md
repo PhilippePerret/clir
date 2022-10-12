@@ -1,5 +1,7 @@
+0.4.2
+  Ajout de la méthode String#numeric?
 0.4.1
-  Ajout de la méthode in? pour les Symbols
+  Ajout de la méthode Symbol#in?
 0.4.0
   Ajout des méthodes in? pour String et Integer
 0.3.1
