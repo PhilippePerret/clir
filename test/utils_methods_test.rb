@@ -2,6 +2,13 @@ require "test_helper"
 
 class UtilsMethodsTests < Minitest::Test
 
+  def test_round_method
+    assert_raises(ArgumentError){ round() }
+    assert_equal 6, round(12/2)
+    assert_equal 3.33, round(10.0 / 3)
+    assert_equal 3.3, round(10.0/3, 1)
+    assert_equal 3.3333, round(10.0/3, 4)
+  end
 
   def test_true_or_false_method
     assert_equal :TRUE, true_or_false(2 == 2)

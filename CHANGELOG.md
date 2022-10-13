@@ -1,3 +1,5 @@
+0.4.3
+  Ajout de la méthode round
 0.4.2
   Ajout de la méthode String#numeric?
 0.4.1

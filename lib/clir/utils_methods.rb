@@ -41,6 +41,14 @@ def formate_date(date, options = nil)
 end
 
 ##
+# To round a number
+# 
+def round(n, decim = 2)
+  r = n.to_f.round(decim)
+  r.to_f == r.to_i ? r.to_i : r.to_f
+end
+
+##
 # To copy in the clipboard
 # 
 def clip(ca, silent = false)
