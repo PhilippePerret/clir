@@ -1,3 +1,5 @@
+0.4.4
+  Ajout de la méthode String#normalize[d]
 0.4.3
   Ajout de la méthode round
 0.4.2

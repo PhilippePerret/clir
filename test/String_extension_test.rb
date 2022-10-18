@@ -107,4 +107,26 @@ class ClirStringExtensionTest < Minitest::Test
     refute "12b".numeric?
   end
 
+  def test_method_normalize
+    str = "bonjour"
+    assert_respond_to str, :normalize
+    [
+      ['ça', 'ca'],
+      ['Ça', 'Ca'],
+      ['Æsitope', 'Aesitope'],
+      ['œuf', 'oeuf'],
+      ['Bonjour', 'Bonjour'],
+    ].each do |str, expected|
+      assert_equal expected, str.normalize
+    end
+    
+  end
+
+  def test_method_normalized
+
+    str = "bonjour"
+    assert_respond_to str, :normalized
+    
+  end
+
 end #class ClirStringExtensionTest

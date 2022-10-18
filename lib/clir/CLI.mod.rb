@@ -21,6 +21,11 @@
 
     CLI.set_options_table({short: long, short: long...})
 
+    Note : il faut obligatoirement mettre la version courte (souvent
+    une seule lettre) en Symbol : 
+        CLI.set_options_table({e: :edition})
+
+
 =end
 module CLI
 class << self
