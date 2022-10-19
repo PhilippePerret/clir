@@ -1,3 +1,5 @@
+0.4.5
+  Ajout de la méthode String#patronize
 0.4.4
   Ajout de la méthode String#normalize[d]
 0.4.3

@@ -76,6 +76,8 @@ class String
     
   end
 
+  # --- Predicate Methods ---
+
   # @return TRUE is +str+ is a number (integer or float) in a string.
   def numeric?
     self.match?(/^[0-9.]+$/)
@@ -95,6 +97,8 @@ class String
       raise "in? waits for a String, an Hash or a Array. Given: #{ary.class}."
     end
   end
+
+  # --- Helpers Methods ---
 
   # Si le texte est :
   # 
@@ -168,6 +172,21 @@ class String
     "\033[1;94m#{self}\033[0m"
   end
   alias :purple :mauve
+
+
+  # --- Transform Methods ---
+
+  def patronize
+    str = self
+    str.split(/( |\-)/).map do |n|
+      n = n.downcase
+      if n == 'de' 
+        'de'
+      else
+        n.capitalize 
+      end
+    end.join('')
+  end
 
   def normalize
     self

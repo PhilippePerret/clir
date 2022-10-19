@@ -123,10 +123,24 @@ class ClirStringExtensionTest < Minitest::Test
   end
 
   def test_method_normalized
-
     str = "bonjour"
     assert_respond_to str, :normalized
-    
+  end
+
+  def test_method_patronize
+    str = "bonjour"
+    assert_respond_to str, :patronize
+    [
+      ['bonjour', 'Bonjour'],
+      ['marion michel', 'Marion Michel'],
+      ['MARION MICHEL', 'Marion Michel'],
+      ['mARION mICHEL', 'Marion Michel'],
+      ['marion michel-aliot', 'Marion Michel-Aliot'],
+      ['MARION DE MICHEL', 'Marion de Michel'],
+      ['HUBERT-FÉLIX THIÉFAINE', 'Hubert-Félix Thiéfaine']
+    ].each do |str, expected|
+      assert_equal expected, str.patronize
+    end
   end
 
 end #class ClirStringExtensionTest
