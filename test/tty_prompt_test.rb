@@ -317,4 +317,16 @@ class TTYPromptTests < Minitest::Test
     assert_equal 10, r.response
     assert_equal 20, r.response
   end
+
+  def test_tty_respond_to_default_name_for_value
+    assert_respond_to Q, :default_name_for_value
+  end
+
+  def test_default_name_for_value_return_right_value
+    liste = [{name:"Un", value: 1}, {name:'deux', value:2}]
+    defaut = Q.default_name_for_value(liste, 3)
+    assert_nil defaut
+    defaut = Q.default_name_for_value(liste, 1)
+    assert_equal 'Un', defaut
+  end
 end

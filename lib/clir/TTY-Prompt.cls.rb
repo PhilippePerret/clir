@@ -44,6 +44,23 @@ module TTY
       end
     end
 
+    # Sadly, for select, Tty-prompt requires then :name value for the 
+    # default value (:default) in methods. This method can return
+    # :name valeur from :value
+    # 
+    # @param choices_list {Array} Choices list for select method
+    # @param default_value {Any} The default value
+    #
+    # @return nil or :name of the choice.
+    def default_name_for_value(choices_list, default_value)
+      choices_list.each do |dchoix|
+        if dchoix[:value] == default_value
+          return dchoix[:name]
+        end
+      end
+      return nil
+    end
+
   end #/class MyPrompt
 end
 

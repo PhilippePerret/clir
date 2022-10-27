@@ -1,3 +1,5 @@
+0.4.6
+  Ajout de la méthode Q.default_name_for_value
 0.4.5
   Ajout de la méthode String#patronize
 0.4.4
