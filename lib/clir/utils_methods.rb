@@ -29,13 +29,17 @@ def formate_date(date, options = nil)
   options ||= {}
   @last_format = nil if options[:update_format]
   @last_format ||= begin
-    fmt = []
-    fmt << 'le ' if options[:sentence]
-    fmt << '%d %m %Y'
-    delh = options[:sentence] ? 'à' : '-'
-    fmt << " #{delh} %H:%M" unless options[:no_time]
-    fmt << ':%S' if options[:seconds]
-    fmt.join('')
+    if options[:template]
+      options[:template]
+    else
+      fmt = []
+      fmt << 'le ' if options[:sentence]
+      fmt << '%d %m %Y'
+      delh = options[:sentence] ? 'à' : '-'
+      fmt << " #{delh} %H:%M" unless options[:no_time]
+      fmt << ':%S' if options[:seconds]
+      fmt.join('')
+    end
   end
   date.strftime(@last_format)
 end
