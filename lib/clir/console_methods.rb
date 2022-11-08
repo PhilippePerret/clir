@@ -33,7 +33,7 @@ end
 
 # Use 'less' command to display +texte+
 def less(texte)
-  if help?
+  if debug?
     puts texte
   else
     exec "echo \"#{texte.gsub(/\"/,'\\"')}\" | less -r"

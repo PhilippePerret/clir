@@ -70,7 +70,7 @@ class << self
   end
 
   def param(key)
-    params[key.to_sym]
+    @params[key.to_sym]
   end
 
   ##
