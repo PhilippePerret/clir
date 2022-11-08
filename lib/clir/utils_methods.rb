@@ -27,7 +27,7 @@ end
 # 
 def formate_date(date, options = nil)
   options ||= {}
-  @last_format = nil if options[:update_format]
+  @last_format = nil if options[:update_format] || options[:template]
   @last_format ||= begin
     if options[:template]
       options[:template]
