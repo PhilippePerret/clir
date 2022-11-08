@@ -1,3 +1,5 @@
+0.4.7
+  Options :template pour formate_date
 0.4.6
   Ajout de la méthode Q.default_name_for_value
 0.4.5
