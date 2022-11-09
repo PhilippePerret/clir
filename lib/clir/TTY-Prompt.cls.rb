@@ -22,11 +22,29 @@ require 'json'
 module TTY
   class MyPrompt < Prompt
 
+    # Method to switch hardly in interactive mode during tests
+    def self.set_mode_interactive
+      Object.remove_const('Q')
+      Object.const_set('Q', new)
+      Q.init(mode_interactive = true)
+    end
+    def self.unset_mode_interactive
+      Object.remove_const('Q')
+      Object.const_set('Q', new)
+      Q.init(mode_interactive = false)
+    end
+
+
+
     ##
     # Init Q instance
     #
-    def init
-      toggle_mode
+    def init(mode_interactive = nil)
+      if mode_interactive === nil 
+        toggle_mode
+      else
+        include_methods_by_mode(mode_interactive)
+      end
       @inputs = nil # for testing
     end
 
@@ -34,14 +52,6 @@ module TTY
     # inversement.
     def toggle_mode
       include_methods_by_mode(not(CLI::Replayer.on? || test? ))
-    end
-
-    # Method to switch hardly in interactive mode during tests
-    def set_mode_interactive
-      include_methods_by_mode(true)
-    end
-    def unset_mode_interactive
-      include_methods_by_mode(false)
     end
 
     def include_methods_by_mode(interactive_mode)
