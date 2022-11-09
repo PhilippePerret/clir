@@ -29,7 +29,7 @@ module TTY
     # Méthode qui fait basculer du mode normal au mode test et
     # inversement.
     def toggle_mode
-      if CLI::Replayer.on? || test?
+      if CLI::Replayer.on? || (test? && not(ENV['NO_CLI_TEST_INPUTS']=='true'))
         # 
         # Use Inputs methods instead of usual methods
         # (overwrite them)

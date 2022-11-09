@@ -1,3 +1,6 @@
+0.4.8
+  Environment constant 'NO_CLI_TEST_INPUTS' to use TTY-Prompt in
+  regular mode.
 0.4.7
   Options :template pour formate_date
 0.4.6
