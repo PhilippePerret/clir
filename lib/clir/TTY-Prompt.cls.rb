@@ -61,13 +61,15 @@ module TTY
         # Usual methods
         # (overwrite tests method if any)
         # 
-        self.class.include ReplayedTTYMethods #::ReplayedPrompt
+        # self.class.include ReplayedTTYMethods #::ReplayedPrompt
+        self.extend ReplayedTTYMethods
       else
         # 
         # Use Inputs methods instead of usual methods
         # (overwrite them)
         # 
-        self.class.include InputsTTYMethods
+        # self.class.include InputsTTYMethods
+        self.extend InputsTTYMethods
       end
       @mode = interactive_mode ? :interactive : :inputs
     end
