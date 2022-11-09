@@ -11,6 +11,10 @@
   * make tests easier with CliTest
   * enable the "redo" command (with '_')
 
+  # To toggle interactive/inputs mode during the tests (mainly)
+  Q.set_mode_interactive
+  Q.unset_mode_interactive
+
 =end
 require 'tty-prompt'
 require 'json'
@@ -29,23 +33,34 @@ module TTY
     # Méthode qui fait basculer du mode normal au mode test et
     # inversement.
     def toggle_mode
-      puts "ENV['NO_CLI_TEST_INPUTS'] = #{ENV['NO_CLI_TEST_INPUTS'].inspect}".jaune
-      if CLI::Replayer.on? || (test? && not(ENV['NO_CLI_TEST_INPUTS']=='true'))
-        # 
-        # Use Inputs methods instead of usual methods
-        # (overwrite them)
-        # 
-        self.class.include InputsTTYMethods
-      else
+      include_methods_by_mode(not(CLI::Replayer.on? || test? ))
+    end
+
+    # Method to switch hardly in interactive mode during tests
+    def set_mode_interactive
+      include_methods_by_mode(true)
+    end
+    def unset_mode_interactive
+      include_methods_by_mode(false)
+    end
+
+    def include_methods_by_mode(interactive_mode)
+      if interactive_mode
         # 
         # Usual methods
         # (overwrite tests method if any)
         # 
         self.class.include ReplayedTTYMethods #::ReplayedPrompt
-      end
+      else
+        # 
+        # Use Inputs methods instead of usual methods
+        # (overwrite them)
+        # 
+        self.class.include InputsTTYMethods
+      end        
     end
 
-    # Sadly, for select, Tty-prompt requires then :name value for the 
+    # Sadly, for select, Tty-prompt requires the :name value for the 
     # default value (:default) in methods. This method can return
     # :name valeur from :value
     # 
