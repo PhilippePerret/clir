@@ -105,3 +105,25 @@ with_inputs = ["Le\nTexte\nExplicite"]
 Pour simuler les touches ⌃D (control et D), on peut utiliser au choix : `CTRL-D`, `CTRL D`, `CTRL_D` ou `^D`.
 
 > Note : mais cela revient simplement à mettre un texte vide.
+
+### Mode interactif/entrées
+
+Parfois, pendant les tests, on peut vouloir taper les entrées à la main (ou par osascript). Dans ce cas, il faut changer TTY-Prompt de mode. Cela se fait à l'aide de :
+
+~~~ruby
+TTY::MyPrompt.set_mode_interactive
+# => Q passe en mode interactif, avec l'affichage à l'écran du prompt
+~~~
+
+~~~ruby
+TTY::MyPrompt.unset_mode_interactive
+# => Pour revenir en mode par inputs
+~~~
+
+Pour vérifier le mode courant, on peut faire appel à :
+
+~~~ruby
+Q.mode
+# => :interactive ou :inputs
+~~~
+

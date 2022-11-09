@@ -1,6 +1,9 @@
+0.5.0
+  Enable to toggle interactive/inputs mode in TTY::MyPrompt
+  current instance. ((efficient))
 0.4.9
   Enable to toggle interactive/inputs mode in TTY::MyPrompt
-  current instance.
+  current instance. ((inefficient))
 0.4.8
   Environment constant 'NO_CLI_TEST_INPUTS' to use TTY-Prompt in
   regular mode.

@@ -12,8 +12,8 @@
   * enable the "redo" command (with '_')
 
   # To toggle interactive/inputs mode during the tests (mainly)
-  Q.set_mode_interactive
-  Q.unset_mode_interactive
+  TTY::MyPrompt.set_mode_interactive
+  TTY::MyPrompt.unset_mode_interactive
 
 =end
 require 'tty-prompt'
@@ -22,7 +22,7 @@ require 'json'
 module TTY
   class MyPrompt < Prompt
 
-    # Method to switch hardly in interactive mode during tests
+    # Methods to switch hardly in interactive mode during tests
     def self.set_mode_interactive
       Object.send(:remove_const, 'Q')
       Object.const_set('Q', new)
@@ -61,14 +61,12 @@ module TTY
         # Usual methods
         # (overwrite tests method if any)
         # 
-        # self.class.include ReplayedTTYMethods #::ReplayedPrompt
         self.extend ReplayedTTYMethods
       else
         # 
         # Use Inputs methods instead of usual methods
         # (overwrite them)
         # 
-        # self.class.include InputsTTYMethods
         self.extend InputsTTYMethods
       end
       @mode = interactive_mode ? :interactive : :inputs
