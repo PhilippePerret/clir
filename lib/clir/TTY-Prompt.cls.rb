@@ -34,7 +34,8 @@ module TTY
       Q.init(mode_interactive = false)
     end
 
-
+    # @prop :interactive or :inputs
+    attr_reader :mode
 
     ##
     # Init Q instance
@@ -67,7 +68,8 @@ module TTY
         # (overwrite them)
         # 
         self.class.include InputsTTYMethods
-      end        
+      end
+      @mode = interactive_mode ? :interactive : :inputs
     end
 
     # Sadly, for select, Tty-prompt requires the :name value for the 
@@ -91,7 +93,7 @@ module TTY
 end
 
 ##
-# Regular methods with replay possibilities
+# Regular methods with replay capabilities
 # 
 module ReplayedTTYMethods
 class ReplayedPrompt < TTY::Prompt
