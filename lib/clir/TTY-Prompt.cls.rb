@@ -24,12 +24,12 @@ module TTY
 
     # Method to switch hardly in interactive mode during tests
     def self.set_mode_interactive
-      Object.remove_const('Q')
+      Object.send(:remove_const, 'Q')
       Object.const_set('Q', new)
       Q.init(mode_interactive = true)
     end
     def self.unset_mode_interactive
-      Object.remove_const('Q')
+      Object.send(:remove_const, 'Q')
       Object.const_set('Q', new)
       Q.init(mode_interactive = false)
     end
