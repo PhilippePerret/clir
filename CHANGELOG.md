@@ -1,3 +1,5 @@
+0.6.3
+  Fixed bug in TTY::MyPrompt (2)
 0.6.2
   Fixed bug in TTY::MyPrompt
 0.6.1
