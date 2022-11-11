@@ -28,6 +28,7 @@
 
 =end
 module CLI
+MARKER_TESTS_FILE = File.expand_path(File.join('.','.MARKER_TESTS'))
 class << self
 
   ##
@@ -158,6 +159,21 @@ class << self
   def set_command_line_data(data)
     data.each do |k, v| instance_variable_set("@#{k}", v) end
   end
+
+  # --- Tests Methods ---
+
+  def set_tests_on_with_marker
+    File.write(MARKER_TESTS_FILE, "#{Time.now}")
+  end
+
+  def unset_tests_on_with_marker
+    if File.exist?(MARKER_TESTS_FILE)
+      File.delete(MARKER_TESTS_FILE)
+    else
+      puts "Weirdly, the test marker file (CLI::MARKER_TESTS_FILE) doesn't exist…".rouge
+    end
+  end
+
 
   private
 

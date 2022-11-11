@@ -52,4 +52,37 @@ class ClirTest < Minitest::Test
     refute CLI.options[:verbose]
   end
 
+  def test_marker_tests_file_constant_exists
+    assert defined?(CLI::MARKER_TESTS_FILE), "la constante CLI::MARKER_TESTS_FILE devrait être définie"
+  end
+
+  def test_test_on_by_marker
+    marker_existait = File.exist?(CLI::MARKER_TESTS_FILE)
+    if marker_existait
+      FileUtils.cp(CLI::MARKER_TESTS_FILE, "#{CLI::MARKER_TESTS_FILE}-backup")
+    else
+      File.write(CLI::MARKER_TESTS_FILE, "avec rien")
+    end
+    assert_respond_to CLI, :set_tests_on_with_marker
+    assert_respond_to CLI, :unset_tests_on_with_marker
+    CLI.unset_tests_on_with_marker
+    refute File.exist?(CLI::MARKER_TESTS_FILE), "Le fichier #{CLI::MARKER_TESTS_FILE} (CLI::MARKER_TESTS_FILE) ne devrait pas exister…"
+    refute test?, "Mode test should be OFF"
+    Clir::State.reset
+    CLI.set_tests_on_with_marker
+    assert File.exist?(CLI::MARKER_TESTS_FILE), "Le fichier #{CLI::MARKER_TESTS_FILE} (CLI::MARKER_TESTS_FILE) devrait exister…"
+    assert test?, "Mode test should be ON"
+    Clir::State.reset
+    CLI.unset_tests_on_with_marker
+    refute File.exist?(CLI::MARKER_TESTS_FILE), "Le fichier #{CLI::MARKER_TESTS_FILE} (CLI::MARKER_TESTS_FILE) ne devrait plus exister…"
+    refute test?, "Mode test should be OFF"
+
+    # 
+    # On remet le marqueur s'il existait
+    # 
+    if marker_existait
+      FileUtils.cp("#{CLI::MARKER_TESTS_FILE}-backup", CLI::MARKER_TESTS_FILE)
+    end
+  end
+
 end

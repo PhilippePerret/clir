@@ -22,7 +22,24 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+[TODO] Reprendre toutes les méthodes
+
+### Test state
+
+~~~ruby
+# Use it in test_helper.rb ou spec_helper.rb
+
+require 'clir'
+
+CLI.set_tests_on_with_marker
+# => universal test marker.Whereever you call the app, test?
+# will be true
+
+# Don't forget to use :
+CLI.unset_tests_on_with_marker
+# … to remove test on
+~~~
+
 
 ## Development
 

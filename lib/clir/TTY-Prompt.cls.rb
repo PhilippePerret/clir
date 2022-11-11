@@ -22,17 +22,20 @@ require 'json'
 module TTY
   class MyPrompt < Prompt
 
-    # Methods to switch hardly in interactive mode during tests
-    def self.set_mode_interactive
-      Object.send(:remove_const, 'Q')
-      Object.const_set('Q', new)
-      Q.init(mode_interactive = true)
-    end
-    def self.unset_mode_interactive
-      Object.send(:remove_const, 'Q')
-      Object.const_set('Q', new)
-      Q.init(mode_interactive = false)
-    end
+    class << self
+      # Methods to switch hardly in interactive mode during tests
+      def set_mode_interactive
+        Object.send(:remove_const, 'Q')
+        Object.const_set('Q', new)
+        Q.init(mode_interactive = true)
+      end
+      def unset_mode_interactive
+        Object.send(:remove_const, 'Q')
+        Object.const_set('Q', new)
+        Q.init(mode_interactive = false)
+      end
+      alias :set_mode_inputs :unset_mode_interactive
+    end #/<< self
 
     # @prop :interactive or :inputs
     attr_reader :mode

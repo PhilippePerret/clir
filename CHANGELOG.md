@@ -1,3 +1,9 @@
+0.6.0
+  Method CLI::set_tests_on_with_marker
+  Method CLI::unset_tests_on_with_marker
+  To universalize the test state.
+0.5.1
+  Method TTY::MyPrompt.set_mode_inputs (alias)
 0.5.0
   Enable to toggle interactive/inputs mode in TTY::MyPrompt
   current instance. ((efficient))

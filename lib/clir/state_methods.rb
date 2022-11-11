@@ -29,7 +29,7 @@ class << self
   end
 
   def test?
-    :TRUE == @__teston ||= true_or_false((CLI.options[:test]||CLI.options[:tests]) === true || ENV['CLI_TEST'] == 'true' || ENV['CLI_TESTS'] == 'true' )
+    :TRUE == @__teston ||= true_or_false((CLI.options[:test]||CLI.options[:tests]) === true || ENV['CLI_TEST'] == 'true' || ENV['CLI_TESTS'] == 'true' || File.exist?(CLI::MARKER_TESTS_FILE))
   end
 
   def help?
