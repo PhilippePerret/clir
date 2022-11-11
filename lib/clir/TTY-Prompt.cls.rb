@@ -53,12 +53,12 @@ module TTY
     # Init Q instance
     #
     def init(mode_interactive = nil)
-      if mode_interactive === nil 
-        toggle_mode
-      elsif File.exist?(MARKER_TTY_FILE)
+      if File.exist?(MARKER_TTY_FILE)
         time, mode_interactive = File.read(MARKER_TTY_FILE).split('::')
         mode_interactive = eval(mode_interactive)
         include_methods_by_mode(mode_interactive)
+      elsif mode_interactive === nil 
+        toggle_mode
       else
         include_methods_by_mode(mode_interactive)
       end
