@@ -1,3 +1,7 @@
+0.6.1
+  Marker for TTY::MyPrompt to be able to keep interactive mode
+  during the tests.
+  Methods TTY::MyPrompt::set_mode_interactive, TTY::MyPrompt::set_mode_inputs, TTY::MyPrompt::unset_mode_interactive
 0.6.0
   Method CLI::set_tests_on_with_marker
   Method CLI::unset_tests_on_with_marker

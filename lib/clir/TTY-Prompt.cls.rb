@@ -22,17 +22,21 @@ require 'json'
 module TTY
   class MyPrompt < Prompt
 
+    MARKER_TTY_FILE = File.expand_path(File.join('.','.TTY_MARKER_FILE'))
+
     class << self
       # Methods to switch hardly in interactive mode during tests
       def set_mode_interactive
         Object.send(:remove_const, 'Q')
         Object.const_set('Q', new)
         Q.init(mode_interactive = true)
+        File.write(MARKER_TTY_FILE,"#{Time.now}::true")
       end
       def unset_mode_interactive
         Object.send(:remove_const, 'Q')
         Object.const_set('Q', new)
         Q.init(mode_interactive = false)
+        File.delete(MARKER_TTY_FILE) if File.exist?(MARKER_TTY_FILE)
       end
       alias :set_mode_inputs :unset_mode_interactive
     end #/<< self
@@ -46,6 +50,10 @@ module TTY
     def init(mode_interactive = nil)
       if mode_interactive === nil 
         toggle_mode
+      elsif File.exist?(MARKER_TTY_FILE)
+        time, mode_interactive = File.read(MARKER_TTY_FILE).split('::')
+        mode_interactive = eval(mode_interactive)
+        include_methods_by_mode(mode_interactive)
       else
         include_methods_by_mode(mode_interactive)
       end

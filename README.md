@@ -40,6 +40,18 @@ CLI.unset_tests_on_with_marker
 # … to remove test on
 ~~~
 
+### Mode test with interactive mode for TTY
+
+When tests are ON, TTY::(My)Prompt toggle in `inputs_mode` so tests can send it the fake-user inputs. Sometimes though, tests use `Osascript` to run *real live test* (like if an user stokes real keys). In this case, `TTY::Prompt` must stay in `interactive mode`. To do so, tests have to call these methods:
+~~~ruby
+
+TTY::MyPrompt.set_mode_interactive
+# => TTY:MyPrompt toggles in interactive mode during the tests
+
+TTY::MyPrompt.set_mode_inputs
+# => TTY::MyPrompt toggles in inputs mode during the tests (or not…)
+
+~~~
 
 ## Development
 
