@@ -1,3 +1,5 @@
+0.6.2
+  Fixed bug in TTY::MyPrompt
 0.6.1
   Marker for TTY::MyPrompt to be able to keep interactive mode
   during the tests.

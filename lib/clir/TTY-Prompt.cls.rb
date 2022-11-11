@@ -25,6 +25,10 @@ module TTY
     MARKER_TTY_FILE = File.expand_path(File.join('.','.TTY_MARKER_FILE'))
 
     class << self
+
+      # @prop :interactive or :inputs
+      attr_accessor :mode
+
       # Methods to switch hardly in interactive mode during tests
       def set_mode_interactive
         Object.send(:remove_const, 'Q')
@@ -35,14 +39,15 @@ module TTY
       def unset_mode_interactive
         Object.send(:remove_const, 'Q')
         Object.const_set('Q', new)
-        Q.init(mode_interactive = false)
         File.delete(MARKER_TTY_FILE) if File.exist?(MARKER_TTY_FILE)
+        Q.init(mode_interactive = false)
       end
       alias :set_mode_inputs :unset_mode_interactive
+    
     end #/<< self
 
-    # @prop :interactive or :inputs
-    attr_reader :mode
+###################       INSTANCE      ###################
+  
 
     ##
     # Init Q instance
@@ -81,6 +86,7 @@ module TTY
         self.extend InputsTTYMethods
       end
       @mode = interactive_mode ? :interactive : :inputs
+      self.class.mode = @mode
     end
 
     # Sadly, for select, Tty-prompt requires the :name value for the 

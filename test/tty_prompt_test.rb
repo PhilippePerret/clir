@@ -6,6 +6,33 @@ class TTYPromptTests < Minitest::Test
     assert defined?(InputsTTYMethods)
   end
 
+  def test_TTY_MyPrompt_mode
+    assert_respond_to TTY::MyPrompt, :mode
+    assert_equal(:inputs, TTY::MyPrompt.mode)
+  end
+
+  def test_TTY_MyPrompt_toggle_mode
+    tty = TTY::MyPrompt
+    current_mode = tty.mode
+
+    tty.set_mode_interactive
+    assert_equal(:interactive, tty.mode)
+    assert File.exist?(tty::MARKER_TTY_FILE)
+    _, mode = File.read(tty::MARKER_TTY_FILE).split('::')
+    assert_equal "true", mode
+
+    tty.set_mode_inputs
+    refute File.exist?(tty::MARKER_TTY_FILE)
+    assert_equal(:inputs, tty.mode)
+
+    # 
+    # On remet le mode qui était peut-être en route
+    # 
+    if current_mode
+      Q.include_methods_by_mode(current_mode)
+    end
+  end
+
   def test_Q_class_should_exist_and_respond_to_methods
     assert defined?(Q)
     assert Q.respond_to?(:toggle_mode)
