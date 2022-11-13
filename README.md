@@ -1,8 +1,6 @@
 # Clir
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/clir`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+A lot of usefull methods to deal with CLI application and more. Its my Swizerland's Knife.
 
 ## Installation
 
@@ -32,7 +30,7 @@ Or install it yourself as:
 require 'clir'
 
 CLI.set_tests_on_with_marker
-# => universal test marker.Whereever you call the app, test?
+# => universal test marker. Whereever you call the app, test?
 # will be true
 
 # Don't forget to use :

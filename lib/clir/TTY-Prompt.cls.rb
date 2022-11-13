@@ -54,7 +54,7 @@ module TTY
     #
     def init(mode_interactive = nil)
       if File.exist?(MARKER_TTY_FILE)
-        time, mode_interactive = File.read(MARKER_TTY_FILE).split('::')
+        _, mode_interactive = File.read(MARKER_TTY_FILE).split('::')
         mode_interactive = eval(mode_interactive)
         include_methods_by_mode(mode_interactive)
       elsif mode_interactive === nil 

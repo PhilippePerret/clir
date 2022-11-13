@@ -4,6 +4,16 @@
 require 'clir'
 ~~~
 
+
+
+> NOTE : CE DOCUMENT EST TRÈS LOIN DE PRÉSENTER TOUTES LES MÉTHODES
+
+
+
+[TOC]
+
+
+
 ## L'application
 
 ### Rejouer une commande (mode `Replayer`)
@@ -13,6 +23,29 @@ Pour rejouer une commande — pas seulement la commmande mais aussi toutes les e
 > Attention : il faut vraiment qu'il n'y ait que '\_' après la commande et rien d'autre, même pas une option.
 
 C'est une commande particulièrement utile quand on teste l'application car elle évite d'avoir à retaper chaque fois les commandes et les options.
+
+
+
+---
+
+## File extensions
+
+### `File#tail`
+
+Retourne les x dernières du fichier sans avoir à le lire en intégralité (parfait pour les fichiers énormes.
+
+~~~ruby
+@syntax
+	File.tail(path, nombre_lignes)
+
+# Par exemple
+
+File.tail("monfichier.txt", 2000)
+# => Retourne les 2000 dernières lignes du fichier (ou moins s'il y en a moins)
+# Note : les lignes sont dans le même ordre.
+~~~
+
+
 
 ## CLI Tests
 
