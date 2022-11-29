@@ -19,7 +19,7 @@ end
 # Formate de date as JJ MM AAAA (or MM JJ AAAA in english)
 # @param {Time} date
 # @param {Hash} Options table:
-#   :no_time    Juste day, without time
+#   :no_time    Only day, without time
 #   :seconds    Add seconds with time
 #   :update_format    If true, the format is updated. Otherwise, the
 #                     last format is used for all next date

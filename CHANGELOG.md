@@ -1,3 +1,5 @@
+* 0.7.1
+  - Add colors (backgrounds and foregrounds)
 * 0.7.0
   - Add File extension file
   - New method: File.tail

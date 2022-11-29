@@ -130,14 +130,30 @@ class String
 
 
   def blanc
-    "#{self}"
+    "\033[0;38m#{self}\033[0m"
   end
   alias :white :blanc
+
+  def blanc_clair
+    "\033[0;37m#{self}\033[0m"
+  end
   
   def bleu
     "\033[0;96m#{self}\033[0m"
   end
   alias :blue :bleu
+
+  def bleu_clair
+    "\033[0;36m#{self}\033[0m"
+  end
+
+  def fond_bleu
+    "\033[0;44m#{self}\033[0m"
+  end
+
+  def fond_bleu_clair
+    "\033[0;46m#{self}\033[0m"
+  end
 
   def vert
     "\033[0;92m#{self}\033[0m"
@@ -148,6 +164,10 @@ class String
     "\033[0;32m#{self}\033[0m"
   end
   alias :ligth_green :vert_clair
+
+  def fond_vert
+    "\033[0;42m#{self}\033[0m"
+  end
 
   def rouge
     "\033[0;91m#{self}\033[0m"
@@ -167,6 +187,10 @@ class String
     "\033[0;93m#{self}\033[0m"
   end
   alias :yellow :jaune
+
+  def jaune_dark
+    "\033[0;33m#{self}\033[0m"
+  end
 
   def mauve
     "\033[1;94m#{self}\033[0m"
