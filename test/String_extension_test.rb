@@ -143,4 +143,43 @@ class ClirStringExtensionTest < Minitest::Test
     end
   end
 
+
+  def test_titlize
+    str = "bonjour"
+    assert_respond_to str, :titleize
+    [
+      ["bonjour", "Bonjour"],
+      ["marion michel", "Marion Michel"],
+      ["marion de michel", "Marion De Michel"],
+      ["mARION DE MICHEL", "Marion De Michel"]
+    ].each do |str, expected|
+      assert_equal expected, str.titleize
+    end
+  end
+
+  def test_camelize
+    str = "bonJour"
+    assert_respond_to str, :camelize
+    [
+      ["bonjour", "Bonjour"],
+      ["bonjour_tout_le_monde", "BonjourToutLeMonde"],
+      ["bonjour tout le monde", "Bonjour tout le monde"]
+    ].each do |str, expected|
+      assert_equal expected, str.camelize
+    end
+  end
+
+  def test_decamelize
+    str = "bonJour"
+    assert_respond_to str, :decamelize
+    [
+      ["Bonjour", "bonjour"],
+      ["BonjourToutLeMonde", "bonjour_tout_le_monde"],
+      ["bonjour tout le monde", "bonjour tout le monde"],
+      ["BonjourTout leMonde", "bonjour_tout le_monde"]
+    ].each do |str, expected|
+      assert_equal expected, str.decamelize
+    end
+  end
+
 end #class ClirStringExtensionTest

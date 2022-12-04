@@ -200,6 +200,27 @@ class String
 
   # --- Transform Methods ---
 
+  def camelize
+    str = self
+    str[0] = str[0].upcase
+    str.split(' ').map do |seg|
+      seg.gsub(/(?:_([a-z]))/i){$1.upcase}
+    end.join(' ')
+  end
+
+  def decamelize
+    str = self
+    str[0] = str[0].downcase
+    str.split(' ').map do |seg|
+      seg.gsub(/([A-Z])/){ "_#{$1.downcase}"}
+    end.join(' ')
+  end
+
+  def titleize
+    str = self
+    str.split(' ').map { |n| n[0].upcase + n[1..-1].downcase }.join(' ')
+  end
+
   def patronize
     str = self
     str.split(/( |\-)/).map do |n|
