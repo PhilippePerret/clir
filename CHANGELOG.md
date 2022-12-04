@@ -1,3 +1,7 @@
+* 0.8.0
+  - Method camelize
+  - Method decamelize
+  - Method titleize
 * 0.7.1
   - Add colors (backgrounds and foregrounds)
 * 0.7.0
