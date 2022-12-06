@@ -1,3 +1,5 @@
+* 0.9.0
+  - Methods semaine, jour, heure, minute (et pluriel + anglaises)
 * 0.8.0
   - Method camelize
   - Method decamelize
