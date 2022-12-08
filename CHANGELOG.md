@@ -1,3 +1,6 @@
+* 0.10.0
+  - Date utils methods
+  - Yard for documentation
 * 0.9.0
   - Methods semaine, jour, heure, minute (et pluriel + anglaises)
 * 0.8.0
