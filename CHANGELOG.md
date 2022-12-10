@@ -1,3 +1,6 @@
+* 0.11.0
+  - Utils method for number (devise methods)
+  - Powerfull Clir::Table
 * 0.10.0
   - Date utils methods
   - Yard for documentation
