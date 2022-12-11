@@ -123,10 +123,10 @@ class Table
     line = 
       case cols
       when Array
-        cols.collect.with_index do |col, idx|
+        '  ' + cols.collect.with_index do |col, idx|
           alignment = for_header ? :ljust : colonne_aligns[idx]
           col.to_s.send(alignment, @column_widths[idx])
-        end.join(gutter)
+        end.join(gutter) + '  '
       when :separation  then separation
       when String       then cols
       end
@@ -173,7 +173,7 @@ class Table
   end
 
   def separation
-    @separation ||= char_separator * table_width
+    @separation ||= char_separator * (table_width + 4)
   end
 
   def char_separator

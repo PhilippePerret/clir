@@ -31,28 +31,28 @@ class CliTableTester < Minitest::Test
     # En utilisant les valeurs par défaut
     # 
     tbl(header: ['UN', 'DEUX', 'TROIS'])
-    exp = "  UN    DEUX    TROIS\n  *******************\n  *******************\n\n\n"
+    exp = "    UN    DEUX    TROIS  \n  ***********************\n  ***********************\n\n\n"
     assert_equal exp, output, "L'affichage de la table n'est pas bon"
   
     #
     # En modifiant la gouttière
     # 
     tbl(header: ['UN', 'DEUX', 'TROIS'], gutter: 2)
-    exp = "  UN  DEUX  TROIS\n  ***************\n  ***************\n\n\n"
+    exp = "    UN  DEUX  TROIS  \n  *******************\n  *******************\n\n\n"
     assert_equal exp, output, "L'affichage de la table n'est pas bon"
 
     #
     # En modifiant le séparateur
     # 
     tbl(header: ['UN', 'DEUX', 'TROIS'], gutter: 4, char_separator: '+')
-    exp = "  UN    DEUX    TROIS\n  +++++++++++++++++++\n  +++++++++++++++++++\n\n\n"
+    exp = "    UN    DEUX    TROIS  \n  +++++++++++++++++++++++\n  +++++++++++++++++++++++\n\n\n"
     assert_equal exp, output, "L'affichage de la table n'est pas bon"
 
     #
     # En modifiant l'indentation
     # 
     tbl(header: ['UN', 'DEUX', 'TROIS'], gutter: 4, char_separator: '+', indent: 3)
-    exp = "   UN    DEUX    TROIS\n   +++++++++++++++++++\n   +++++++++++++++++++\n\n\n"
+    exp = "     UN    DEUX    TROIS  \n   +++++++++++++++++++++++\n   +++++++++++++++++++++++\n\n\n"
     assert_equal exp, output, "L'affichage de la table n'est pas bon"
 
   end
@@ -63,10 +63,10 @@ class CliTableTester < Minitest::Test
     tbl(header: ['Un','Deux','Trois'])
     add ["Première", "Deuxième", "Troisième"]
     exp = [
-      "  Un          Deux        Trois    ",
-      "  *********************************",
-      "  Première    Deuxième    Troisième",
-      "  *********************************"
+      "    Un          Deux        Trois      ",
+      "  *************************************",
+      "    Première    Deuxième    Troisième  ",
+      "  *************************************"
     ].join("\n").rstrip
 
     out = output.rstrip
@@ -82,13 +82,13 @@ class CliTableTester < Minitest::Test
     add ["Voisin", "Voisine", "Cuisine"]
     add ["Choix", "A", "Porcelaine"]
     exp = [
-      "  Un          Deux        Trois     ",
-      "  **********************************",
-      "  Première    Deuxième    Troisième ",
-      "  Cousin      Cousine     Moustique ",
-      "  Voisin      Voisine     Cuisine   ",
-      "  Choix       A           Porcelaine",
-      "  **********************************"
+      "    Un          Deux        Trois       ",
+      "  **************************************",
+      "    Première    Deuxième    Troisième   ",
+      "    Cousin      Cousine     Moustique   ",
+      "    Voisin      Voisine     Cuisine     ",
+      "    Choix       A           Porcelaine  ",
+      "  **************************************"
     ].join("\n").rstrip
 
     out = output.rstrip
@@ -102,11 +102,11 @@ class CliTableTester < Minitest::Test
     add ["Voisin", "Voisine", "Cuisine"]
     add ["Choix", "A", "Porcelaine"]
     exp = [
-      "  Un        Deux       Trois     ",
-      "  *******************************",
-      "  Voisin    Voisine    Cuisine   ",
-      "  Choix           A    Porcelaine",
-      "  *******************************"
+      "    Un        Deux       Trois       ",
+      "  ***********************************",
+      "    Voisin    Voisine    Cuisine     ",
+      "    Choix           A    Porcelaine  ",
+      "  ***********************************"
     ].join("\n").rstrip
 
     out = output.rstrip
@@ -120,13 +120,13 @@ class CliTableTester < Minitest::Test
     add [1, 2, 3]
     add [3, 2, 1]
     exp = [
-      "  Mars    Avril    Juin",
-      "  *********************",
-      "  1       2        3   ",
-      "  3       2        1   ",
-      "  *********************",
-      "  4       4        4   ",
-      "  *********************"
+      "    Mars    Avril    Juin  ",
+      "  *************************",
+      "    1       2        3     ",
+      "    3       2        1     ",
+      "  *************************",
+      "    4       4        4     ",
+      "  *************************"
     ].join("\n")
     out = output.rstrip
     # puts "OUT:\n#{out}"
@@ -145,17 +145,17 @@ class CliTableTester < Minitest::Test
     add [3, 2, 1.4, 5.2]
     exp = [
       "    = TABLEAU AVEC DEVISES =",
-      "    =================================",
-      "    Mars    Avril    Mai      Juin   ",
-      "    =================================",
-      "    1 €     2¥       3.1 $     5.00 €",
-      "    3 €     2¥       1.4 $     5.20 €",
-      "    =================================",
-      "    4 €     4¥       4.5 $    10.20 €",
-      "    ================================="
+      "    =====================================",
+      "      Mars    Avril    Mai      Juin     ",
+      "    =====================================",
+      "      1 €     2¥       3.1 $     5.00 €  ",
+      "      3 €     2¥       1.4 $     5.20 €  ",
+      "    =====================================",
+      "      4 €     4¥       4.5 $    10.20 €  ",
+      "    ====================================="
     ].join("\n")
     out = output.rstrip
-    puts "OUT:\n#{out}"
+    # puts "OUT:\n#{out}"
     assert_equal exp, out, "L'affichage avec colonnes de totaux devrait être bon"
   end
 

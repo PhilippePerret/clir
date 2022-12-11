@@ -1,3 +1,5 @@
+* 0.11.1
+  - Cosmetic for Clir::Table
 * 0.11.0
   - Utils method for number (devise methods)
   - Powerfull Clir::Table
