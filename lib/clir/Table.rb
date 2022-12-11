@@ -67,6 +67,18 @@ class Table
   #                     horizontales de séparation. Une étoile par
   #                     défaut.
   # 
+  # @option params [Array|Hash|Integer] :max_widths 
+  #                 Max width for columns. If it's a integer, it's 
+  #                 the max width for each column.
+  #                 If it's an Array, it's the definition of each
+  #                 column in order. For example, [4, 5, 6] means
+  #                 4 signs for the first column, 5 for the second
+  #                 one and 6 for the third column. Columns without
+  #                 max widths must have nil value.
+  #                 If it's a Hash, the key is the column index 
+  #                 (1-start) and the value is the max lenght in
+  #                 signs.
+  #                 
   def initialize(params = nil)
     @params = params || {}
     @lines = []
@@ -125,7 +137,12 @@ class Table
       when Array
         '  ' + cols.collect.with_index do |col, idx|
           alignment = for_header ? :ljust : colonne_aligns[idx]
-          col.to_s.send(alignment, @column_widths[idx])
+          col = col.to_s
+          if col.length > @column_widths[idx]
+            col[0...(@column_widths[idx] - 1)] + '…'
+          else
+            col.to_s.send(alignment, @column_widths[idx])
+          end
         end.join(gutter) + '  '
       when :separation  then separation
       when String       then cols
@@ -196,6 +213,10 @@ class Table
     @align ||= params[:align]
   end
 
+  def max_widths
+    @max_widths ||= params[:max_widths]
+  end
+
   def colonnes_totaux
     @colonnes_totaux ||= params[:colonnes_totaux]
   end
@@ -252,19 +273,66 @@ class Table
 
     end
 
+    # Calc of the column width. Either defined by widthest value or
+    # header, either by max_widths option parameter.
+    # 
     def calc_column_widths
       #
       # Pour collecter les largeurs de colonnes
       # 
-      @column_widths = []
+      @column_widths = Array.new(column_count, 0)
+      # 
+      # Pour savoir si les largeurs maximales sont définies et
+      # prendre les valeurs.
+      # @rappel : les largeurs peuvent être définies par un integer
+      # un Hash ou un Array.
+      # 
+      maxes = case max_widths
+              when Integer 
+                Array.new(column_count, max_widths)
+              when Hash
+                cw = Array.new(column_count, nil)
+                max_widths.each do |idx_col, val|
+                  cw[idx_col - 1] = val
+                end
+                cw
+              when Array
+                max_widths # must be all defined
+              else
+                Array.new(column_count, nil)
+              end
+      # 
+      # Les largeurs de colonne seraient-elles déjà toutes définies ?
+      # 
+      zero_found = false
+      maxes.each do |width|
+        zero_found = true and break if width == 0 || width.nil?
+      end
+      unless zero_found
+        @column_widths = maxes
+        return # fini
+      end
+
       # 
       # Boucles sur chaque ligne
       # 
       (@header_lines + @lines).each do |cols|
         next unless cols.is_a?(Array)
-        cols.each_with_index do |col, idx|
-          len = col.to_s.length
-          @column_widths[idx] = len if @column_widths[idx].nil? || len > @column_widths[idx]
+        cols.each_with_index do |col, col_idx|
+          if maxes[col_idx]
+            # 
+            # Si la largeur max est définie pour cette colonne
+            # @note
+            #   Pour le moment, sera répété pour chaque ligne…
+            # 
+            @column_widths[col_idx] = max_widths[col_idx]
+          else
+            # 
+            # S'il faut prendre la plus large colonne
+            # 
+            len = col.to_s.length
+            @column_widths[col_idx] = len if len > @column_widths[col_idx]
+          end
         end
       end   
     end

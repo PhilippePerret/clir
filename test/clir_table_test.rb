@@ -159,4 +159,64 @@ class CliTableTester < Minitest::Test
     assert_equal exp, out, "L'affichage avec colonnes de totaux devrait être bon"
   end
 
+  def test_column_max_width_with_array
+    tbl(
+      header:['Septembre', 'Octobre', 'Novembre'],
+      max_widths: [4, 5, 6],
+    )
+    add ["Barnabé", "Colophane", "Brugnions"]
+    add ["Rose", "Singe", "Citron"]
+    add ["Rot", "Si", "Cire"]
+    exp = [
+      "    Sep…    Octo…    Novem…  ",
+      "  ***************************",
+      "    Bar…    Colo…    Brugn…  ",
+      "    Rose    Singe    Citron  ",
+      "    Rot     Si       Cire    ",
+      "  ***************************"
+    ].join("\n")
+    out = output.rstrip
+    assert_equal exp, out, "L'affichage avec limitation de la largeur des colonnes devrait être bon"
+  end
+
+  def test_column_max_width_with_hash
+    tbl(
+      header:['Septembre', 'Octobre', 'Novembre'],
+      max_widths: {1 => 4, 2 => 5, 3 => 6},
+    )
+    add ["Barnabé", "Colophane", "Brugnions"]
+    add ["Rose", "Singe", "Citron"]
+    add ["Rot", "Si", "Cire"]
+    exp = [
+      "    Sep…    Octo…    Novem…  ",
+      "  ***************************",
+      "    Bar…    Colo…    Brugn…  ",
+      "    Rose    Singe    Citron  ",
+      "    Rot     Si       Cire    ",
+      "  ***************************"
+    ].join("\n")
+    out = output.rstrip
+    assert_equal exp, out, "L'affichage avec limitation de la largeur des colonnes devrait être bon"
+  end
+
+  def test_column_max_width_with_integer
+    tbl(
+      header:['Septembre', 'Octobre', 'Novembre'],
+      max_widths: 4,
+    )
+    add ["Barnabé", "Colophane", "Brugnions"]
+    add ["Rose", "Singe", "Citron"]
+    add ["Rot", "Si", "Cire"]
+    exp = [
+      "    Sep…    Oct…    Nov…  ",
+      "  ************************",
+      "    Bar…    Col…    Bru…  ",
+      "    Rose    Sin…    Cit…  ",
+      "    Rot     Si      Cire  ",
+      "  ************************"
+    ].join("\n")
+    out = output.rstrip
+    assert_equal exp, out, "L'affichage avec limitation de la largeur des colonnes devrait être bon"
+  end
+
 end #/class CliTableTester

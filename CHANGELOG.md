@@ -1,3 +1,5 @@
+* 0.11.2
+  - Col max width in Clir::Table
 * 0.11.1
   - Cosmetic for Clir::Table
 * 0.11.0
