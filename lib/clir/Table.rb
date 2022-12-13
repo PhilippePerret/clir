@@ -59,14 +59,14 @@ class Table
   #   :gutter   {Integer} Goutière entre chaque colonne. 4 par défaut
   #   :indent   {Integer} Indentation initiale, en nombre d'espaces
   # 
-  #   :align    {Hash}  Définition de l'alignement des colonnes.
-  #                     :right => [<index colonnes 1-start>]
-  #                     :left  => [<index colonnes 1-start>]
   # 
   #   :char_separator  {String} La caractère pour faire les lignes
   #                     horizontales de séparation. Une étoile par
   #                     défaut.
   # 
+  # @option params [Hash] :align  Définition de l'alignement dans les colonnes.
+  #                               En clé l'indice 1-start de la colonne, en
+  #                               valeur une valeur parmi :right, :left et :center
   # @option params [Array|Hash|Integer] :max_widths 
   #                 Max width for columns. If it's a integer, it's 
   #                 the max width for each column.
@@ -230,13 +230,13 @@ class Table
   private
 
     def define_colonnes_align
+      # 
+      # Par défaut tous les colonnes sont alignés à gauche
+      # 
       @colonne_aligns = Array.new(column_count, :ljust)
       return if align.nil?
-      if align.key?(:right)
-        align[:right].each do |idx|
-          real_idx = idx - 1
-          @colonne_aligns[real_idx] = :rjust
-        end
+      align.each do |indice_colonne, alignment|
+        @colonne_aligns[indice_colonne - 1] = alignement
       end
     end
 
