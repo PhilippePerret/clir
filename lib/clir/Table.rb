@@ -236,7 +236,7 @@ class Table
       @colonne_aligns = Array.new(column_count, :ljust)
       return if align.nil?
       align.each do |indice_colonne, alignment|
-        @colonne_aligns[indice_colonne - 1] = alignement
+        @colonne_aligns[indice_colonne - 1] = alignment
       end
     end
 
