@@ -1,3 +1,6 @@
+* 0.13.0
+  - String#cjust
+  - Alignment in table columns
 * 0.11.2
   - Col max width in Clir::Table
 * 0.11.1

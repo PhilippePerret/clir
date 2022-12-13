@@ -182,4 +182,25 @@ class ClirStringExtensionTest < Minitest::Test
     end
   end
 
+  def test_cjust
+    str = "good"
+    assert_respond_to str, :cjust
+    [
+      ["good", 4, "good"],
+      ["good", 4, "good", '+'],
+      ["good", 2, "go"],
+      ["good", 5, "good "],
+      ["good", 6, " good "],
+      ["good", 8, "--good--", '-'],
+      ["good", 9, "  good   "]
+    ].each do |str, len, expected, remp|
+      actual = if remp.nil?
+        str.cjust(len)
+      else
+        str.cjust(len, remp)
+      end
+      assert_equal expected, actual, "#{str.inspect}.cjust(#{len}, #{remp.inspect}) devrait retourner #{expected.inspect}, il retourne #{actual.inspect}."
+    end
+  end
+
 end #class ClirStringExtensionTest

@@ -100,6 +100,25 @@ class String
 
   # --- Helpers Methods ---
 
+
+  # As ljust (which align to the left) ans rjust (which align to the
+  # right), cjust align to the center depending length
+  # @example
+  #   "good".cjust(10) # => "   good   "
+  #   "good".cjust(10, '+') # => "+++good+++"
+  def cjust(length, fill_with = ' ')
+    if self.length == length
+      return self
+    elsif self.length > length 
+      return self[0...length]
+    else
+      nombre_moitie = (length - self.length) / 2
+      ret = (fill_with * nombre_moitie) + self + (fill_with * nombre_moitie)
+      ret = ret + fill_with if ret.length < length
+      return ret
+    end
+  end
+
   # Si le texte est :
   # 
   #       Mon titre

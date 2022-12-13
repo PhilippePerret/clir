@@ -236,7 +236,12 @@ class Table
       @colonne_aligns = Array.new(column_count, :ljust)
       return if align.nil?
       align.each do |indice_colonne, alignment|
-        @colonne_aligns[indice_colonne - 1] = alignment
+
+        @colonne_aligns[indice_colonne - 1] = case alignment
+        when :right   then :rjust
+        when :left    then :ljust
+        when :center  then :cjust
+        end
       end
     end
 
