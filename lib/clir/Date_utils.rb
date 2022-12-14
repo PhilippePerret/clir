@@ -68,26 +68,31 @@ alias :time_from :date_from
 ##
 # Formate de date as JJ MM AAAA (or MM JJ AAAA in english)
 # @param {Time} date
-# @param {Hash} Options table:
-#   :no_time    Only day, without time
-#   :seconds    Add seconds with time
-#   :update_format    If true, the format is updated. Otherwise, the
-#                     last format is used for all next date
-#   :sentence   Si true, on met "le ... à ...."
+# @param [Hash] options table:
+# @option options [Boolean] :verbal     If true, the format will be "month the day-th etc."
+# @option options [Boolean] :no_time    If true, only day, without time
+# @option options [Boolean] :seconds    If true, add seconds with time
+# @option options [Boolean] :update_format If true, the format is updated. Otherwise, the last format is used for all next date
+# @option options [Boolean] :sentence   If true, on met "le ... à ...."
 # 
 def formate_date(date, options = nil)
   options ||= {}
   @last_format = nil if options[:update_format] || options[:template]
   @last_format ||= begin
+    as_verbal = options[:verbal]
     if options[:template]
       options[:template]
     else
       fmt = []
       fmt << 'le ' if options[:sentence]
-      fmt << '%d %m %Y'
+      fmt << (as_verbal ? "%d #{MOIS[date.month][:long]} %Y" : '%d %m %Y')
       delh = options[:sentence] ? 'à' : '-'
-      fmt << " #{delh} %H:%M" unless options[:no_time]
-      fmt << ':%S' if options[:seconds]
+      unless options[:no_time]
+        fmt << (as_verbal ? " à %H h %M" : " #{delh} %H:%M")
+      end
+      if options[:seconds]
+        fmt << (as verbal ? ' mn et %S s' : ':%S' )
+      end
       fmt.join('')
     end
   end
