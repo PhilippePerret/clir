@@ -85,7 +85,12 @@ def formate_date(date, options = nil)
     else
       fmt = []
       fmt << 'le ' if options[:sentence]
-      fmt << (as_verbal ? "%d #{MOIS[date.month][:long]} %Y" : '%d %m %Y')
+      if as_verbal
+        forday = date.day == 1 ? '1er' : '%-d'
+        fmt << "#{forday} #{MOIS[date.month][:long]} %Y" 
+      else
+        fmt << '%d %m %Y'
+      end
       delh = options[:sentence] ? 'à' : '-'
       unless options[:no_time]
         fmt << (as_verbal ? " à %H h %M" : " #{delh} %H:%M")

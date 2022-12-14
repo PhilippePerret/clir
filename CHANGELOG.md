@@ -1,3 +1,5 @@
+* 0.14.2
+  - Improvement of formate_date
 * 0.14.1
   - Improvement of formate_date
 * 0.14.0
