@@ -1,3 +1,7 @@
+* 0.14.0
+  - formate_date
+  - date_from
+  - date_for_file
 * 0.13.0
   - String#cjust
   - Alignment in table columns

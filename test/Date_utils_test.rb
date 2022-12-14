@@ -30,4 +30,66 @@ class DateUtilsTests < Minitest::Test
     assert_equal(expected, 2.days.ago )  
   end
 
+  def test_date_from
+    quatorze = Time.new(2022,12,14)
+    date_quatorze = Date.new(2022,12,14)
+    [
+      [quatorze       , quatorze], # Time
+      [date_quatorze  , quatorze], # Date
+      ["14/12/2022"   , quatorze], # String straight
+      ["2022/12/14"   , quatorze], # String reverse
+      [quatorze.to_i  , quatorze], # Integer
+    ].each do |input, expected|
+      actual = date_from(input)
+      assert_instance_of Time, actual
+      assert_equal expected, actual, "date_from(#{input.inspect}) devrait valeur #{expected.inspect}, il vaut #{actual.inspect}."
+    end
+  end
+
+  def test_formate_date
+    assert defined?(formate_date)
+    time  = Time.new(2022,11,21, 11, 7, 12)
+    time2 = Time.new(2022,7,11, 12, 11, 13)
+    assert_equal("21 11 2022 - 11:07", formate_date(time))
+    assert_equal("21 11 2022", formate_date(time, no_time:true, update_format: true))
+    # Le même format est appliqué à la suite
+    assert_equal('21 11 2022', formate_date(time))
+    assert_equal('21 11 2022 - 11:07:12', formate_date(time, seconds:true, update_format:true))
+    # Sans format => le même
+    assert_equal('11 07 2022 - 12:11:13', formate_date(time2))
+    assert_equal('le 21 11 2022 à 11:07', formate_date(time, update_format:true, sentence:true))
+    # Sans format : le même
+    assert_equal('le 11 07 2022 à 12:11', formate_date(time2))
+  end
+
+  def test_date_for_file
+    now = Time.now
+    now_hour = now.strftime('%Y-%m-%d-%H-%M')
+    now_day  = now.strftime('%Y-%m-%d')
+    hier = Time.now - 24 * 3600
+
+    [
+      [nil, nil, nil, now_day],
+      [nil, true, nil, now_hour],
+      [nil, nil, '+', now.strftime('%Y+%m+%d')],
+      [hier, nil, nil, hier.strftime('%Y-%m-%d')],
+      [hier, nil, '_', hier.strftime('%Y_%m_%d')],
+    ].each do |time, with_hour, delimitor, expected|
+      if delimitor.nil?
+        if with_hour.nil?
+          if time.nil?
+            actual = date_for_file
+          else
+            actual = date_for_file(time)
+          end
+        else
+          actual = date_for_file(time, with_hour)
+        end
+      else
+        actual = date_for_file(time, with_hour, delimitor)
+      end
+
+      assert_equal(expected, actual, "date_for_file(#{time.inspect}, #{with_hour.inspect}, #{delimitor.inspect}) devrait valoir #{expected.inspect}, il vaut #{actual.inspect}.")
+    end
+  end
 end

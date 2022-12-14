@@ -15,34 +15,6 @@ def mkdir(pth)
   return pth
 end
 
-##
-# Formate de date as JJ MM AAAA (or MM JJ AAAA in english)
-# @param {Time} date
-# @param {Hash} Options table:
-#   :no_time    Only day, without time
-#   :seconds    Add seconds with time
-#   :update_format    If true, the format is updated. Otherwise, the
-#                     last format is used for all next date
-#   :sentence   Si true, on met "le ... à ...."
-# 
-def formate_date(date, options = nil)
-  options ||= {}
-  @last_format = nil if options[:update_format] || options[:template]
-  @last_format ||= begin
-    if options[:template]
-      options[:template]
-    else
-      fmt = []
-      fmt << 'le ' if options[:sentence]
-      fmt << '%d %m %Y'
-      delh = options[:sentence] ? 'à' : '-'
-      fmt << " #{delh} %H:%M" unless options[:no_time]
-      fmt << ':%S' if options[:seconds]
-      fmt.join('')
-    end
-  end
-  date.strftime(@last_format)
-end
 
 ##
 # To round a number
