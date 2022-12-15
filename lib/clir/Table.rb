@@ -106,6 +106,11 @@ class Table
     # 
     add(separation)
 
+    # 
+    # Séparation toujours
+    # 
+    puts "\n\n"
+
     #
     # Écriture du titre (if any)
     # 
