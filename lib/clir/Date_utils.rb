@@ -79,7 +79,7 @@ def formate_date(date, options = nil)
   options ||= {}
   @last_format = nil if options[:update_format] || options[:template]
   @last_format ||= begin
-    as_verbal = options[:verbal]
+    as_verbal = options[:verbal]||options[:sentence]
     if options[:template]
       options[:template]
     else
