@@ -357,7 +357,9 @@ class Table
       @lines.each do |cols|
         colonnes_totaux.each do |idx, type|
           real_idx = idx - 1
-          totaux_line[real_idx] += cols[real_idx]
+          # puts "totaux_line[real_idx] = #{totaux_line[real_idx].inspect}"
+          # puts "cols[real_idx] = #{cols[real_idx].inspect}:#{cols[real_idx].class}"
+          totaux_line[real_idx] += cols[real_idx].to_i
         end
       end
       add(:separation)
