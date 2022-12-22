@@ -1,3 +1,5 @@
+* 0.15.1
+  - String#max and String#max!
 * 0.14.4
   - :sentence => :verbal in formate_date
 * 0.14.3

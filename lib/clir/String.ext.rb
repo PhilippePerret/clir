@@ -101,6 +101,47 @@ class String
   # --- Helpers Methods ---
 
 
+  ##
+  # @return self with +len+ length. Cut it if necessary.
+  # @note
+  #   Up to 10, cut at the end with '…' separator
+  #   Up to 15, cut at the middle and if diff < 5, the separator is '…'
+  # @example
+  #   "Sentence".max(5) # => "Sent…"
+  #   "Long sentence".max(10) # => "Long…tence"
+  #   "Very long and long sentence".max(16)
+  #   # => "Very lo[…]ntence"
+  # 
+  # @param [Integer] len Lenght required (> 1)
+  # 
+  def max(len)
+    len.is_a?(Integer) || raise(ArgumentError.new("Argument should be a Integer"))
+    len > 1 || raise(ArgumentError.new("Minimum length should be 2. You give #{len}."))
+    return "#{self}"            if self.length <= len
+    return self[0...len-1]+'…'  if len <= 10
+    cur_len = self.length
+    diff    = cur_len - len
+
+    sep, moitie = 
+      if len > 15 && diff > 4
+        ['[…]', len / 2 - 2]
+      else
+        ['…', len / 2]
+      end
+
+    midav = self[0..moitie-1] + sep
+    reste = len - midav.length
+    midap = self[-reste..-1]
+
+    return midav + midap
+  end
+
+  def max!(len)
+    self.replace(self.max(len))
+    return true
+  end
+
+
   # As ljust (which align to the left) ans rjust (which align to the
   # right), cjust align to the center depending length
   # @example

@@ -203,4 +203,93 @@ class ClirStringExtensionTest < Minitest::Test
     end
   end
 
+  STRINGS_SHORTENS = [
+      # Jusqu'à 8 on met "…" à la fin
+      ["string"                 ,  2, "s…"],
+      ["s"                      ,  2, "s"],
+      ["se"                     ,  2, "se"],
+      ["string"                 ,  3, "st…"],
+      ["s"                      ,  3, "s"],
+      ["se"                     ,  3, "se"],
+      ["set"                    ,  3, "set"],
+      ["string"                 ,  4, "str…"],
+      ["s"                      ,  4, "s"],
+      ["se"                     ,  4, "se"],
+      ["set"                    ,  4, "set"],
+      ["sete"                   ,  4, "sete"],
+      ["string"                 ,  5, "stri…"],
+      ["string"                 ,  6, "string"],
+      ["strange"                ,  6, "stran…"],
+      ["string"                 ,  7, "string"],      # plus petit
+      ["strange"                ,  7, "strange"],     # égal
+      ["stranger"               ,  7, "strang…"],     # plus grand
+      ["Une longue phrase"      ,  7, "Une lo…"],     # beaucoup plus grand
+      ["string"                 ,  8, "string"],      # plus petit
+      ["stranger"               ,  8, "stranger"],    # égal
+      ["strangers"              ,  8, "strange…"],    # plus grand
+      ["Une longue phrase"      ,  8, "Une lon…"],    # beaucoup plus grand
+      ["string"                 ,  9, "string"],      # plus petit
+      ["strangers"              ,  9, "strangers"],   # égal
+      ["Une longue phrase"      ,  9, "Une long…"],   # beaucoup plus grand
+      ["lie"                    , 10, "lie"],         # plus petit
+      ["strange lo"             , 10, "strange lo"],   # égal
+      ["strange los"            , 10, "strange l…"],
+      # de 11 à 15, on ajoute un '…' au milieu
+      ["hippopotames"           , 10, "hippopota…" ],
+      ["hippopotame"            , 11, "hippopotame" ],
+      ["hippopotames"           , 11, "hippo…tames" ],
+      ["stringe"                , 12, "stringe"],
+      ["hippopotames"           , 12, "hippopotames" ],
+      ["Une longue phrase"      , 12, "Une lo…hrase"], # beaucoup plus grand
+      # À partir de 16
+      #   SI différence < 4 on ajoute '…' au milieu
+      ["Une longue phrase"      , 16, "Une long… phrase"],
+      #   SI différence > 4 on ajoute '[…]' au milieu
+      ["Une trop longue phrase" , 16, "Une tr[…] phrase"],
+      ["Une trop longue phrasée", 16, "Une tr[…]phrasée"],
+    ]
+  def test_max
+    str = "unstring"
+    assert_respond_to str, :max
+    assert_instance_of String, str.max(10)
+
+    # Argument errors
+    assert_raises(ArgumentError) { str.max }
+    e = assert_raises(ArgumentError) { str.max(1) }
+    actual   = e.message
+    expected = "Minimum length should be 2. You give 1."
+    assert_equal(expected, actual)
+    e = assert_raises(ArgumentError) { str.max("1") }
+    assert_equal("Argument should be a Integer", e.message)
+    e = assert_raises(ArgumentError) { str.max(1.0) }
+    assert_equal("Argument should be a Integer", e.message)
+    assert_silent { str.max(10) }
+
+    STRINGS_SHORTENS.each do |str, len, expected|
+      actual = str.max(len)
+      assert_equal expected, actual, "#{str.inspect}.max(#{len}) should be #{expected.inspect}. It is #{actual.inspect}"
+    end
+  end
+
+  def test_max_exclamation
+    str = "unstring"
+    assert_respond_to str, :max!
+    assert_instance_of TrueClass, str.max!(10)
+    # - Arguments error -
+    assert_raises(ArgumentError) { str.max! }
+    e = assert_raises(ArgumentError) { str.max!(1) }
+    expected = "Minimum length should be 2. You give 1."
+    actual   = e.message
+    assert_equal(expected, actual)
+    assert_silent { str.max!(10) }
+
+    # - Tests -
+    STRINGS_SHORTENS.each do |str, len, expected|
+      str_ini = "#{str}".freeze
+      res = str.max!(len)
+      assert res, "max! should return true"
+      assert_equal expected, str, "#{str_ini.inspect}.max(#{len}) should be #{expected.inspect}. It is #{str.inspect}"
+    end
+  end
+
 end #class ClirStringExtensionTest
