@@ -261,7 +261,7 @@ class String
   # --- Transform Methods ---
 
   def camelize
-    str = self
+    str = "#{self}"
     str[0] = str[0].upcase
     str.split(' ').map do |seg|
       seg.gsub(/(?:_([a-z]))/i){$1.upcase}

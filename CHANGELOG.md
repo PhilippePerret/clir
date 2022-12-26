@@ -1,3 +1,5 @@
+* 0.16.1
+  - Fixed bug String#camelize (frozen string)
 * 0.16.0
   - Ajout du gem FileUtils
 * 0.15.2
