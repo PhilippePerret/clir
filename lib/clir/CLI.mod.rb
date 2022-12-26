@@ -66,7 +66,7 @@ class << self
   # @return command line parameters
   # 
   def params
-    @params || self.init
+    defined?(@params) || self.init
     @params
   end
 

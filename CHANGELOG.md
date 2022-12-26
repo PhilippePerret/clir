@@ -1,3 +1,5 @@
+* 0.15.2
+  - Minibug sur @params fixed
 * 0.15.1
   - String#max and String#max!
 * 0.14.4
