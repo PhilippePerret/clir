@@ -9,6 +9,7 @@
     ~~~
 
 =end
+require 'fileutils'
 require "clir/version"
 require 'clir/String.ext'
 require 'clir/CLI.mod'

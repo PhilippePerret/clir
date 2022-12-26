@@ -1,3 +1,5 @@
+* 0.16.0
+  - Ajout du gem FileUtils
 * 0.15.2
   - Minibug sur @params fixed
 * 0.15.1
