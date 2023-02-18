@@ -1,3 +1,5 @@
+* 0.17.1
+  - Add File#affix method
 * 0.16.1
   - Fixed bug String#camelize (frozen string)
 * 0.16.0

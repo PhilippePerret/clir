@@ -40,4 +40,15 @@ class File
     file.close
   end
 
+
+  # @return [String] the affix's file, i.e. the name without the
+  # extension.
+  # 
+  # @example
+  #   File.affix("myfile.ext") => "myfile"
+  #   File.affix("pth/to/myfile.ext") => "myfile"
+  def self.affix(path)
+    File.basename(path,File.extname(path))
+  end
+
 end
