@@ -1,3 +1,5 @@
+* 0.17.2
+  - Add human_date/date_humaine method
 * 0.17.1
   - Add File#affix method
 * 0.16.1

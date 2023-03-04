@@ -27,6 +27,21 @@ DAYNAMES = [
 ]
 
 
+# @return [String] Une date formatée avec le moins verbal
+# 
+# @param [Time|Date|NIl] La date. Si non fournie, on prend maintenant
+# @param [Hash] options Les options de formatage
+# @option lenght [Symbol] :court (pour le mois court)
+def human_date(ladate = nil, **options)
+  ladate ||= Time.now
+  options.key?(:length) || options.merge!(length: :long)
+  lemois = MOIS[ladate.month][options[:length]]
+  lemois = "#{lemois}." if options[:length] == :court
+  "#{ladate.day} #{lemois} #{ladate.year}"
+end
+alias :date_humaine :human_date
+
+
 # @return A date for a file, now
 # @example
 #   date_for_file # => "2022-12-14"
@@ -96,7 +111,7 @@ def formate_date(date, options = nil)
         fmt << (as_verbal ? " à %H h %M" : " #{delh} %H:%M")
       end
       if options[:seconds]
-        fmt << (as verbal ? ' mn et %S s' : ':%S' )
+        fmt << (as_verbal ? ' mn et %S s' : ':%S' )
       end
       fmt.join('')
     end

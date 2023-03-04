@@ -2,6 +2,48 @@ require 'test_helper'
 
 class DateUtilsTests < Minitest::Test
 
+  def setup
+    super
+  end
+
+  # - human_date -
+
+  # def test_human_date
+  #   assert_respond_to Kernel, :human_date
+  #   assert_respond_to Kernel, :date_humaine
+  # end
+  def test_human_date_without_args
+    # Sans argument, :human_date retourne la date
+    # d'aujourd'hui
+    now = Time.now
+    lemois = MOIS[now.month][:long]
+    expected  = "#{now.day} #{lemois} #{now.year}"
+    actual    = human_date
+    assert_equal(expected, actual, ":human_date devrait retourner #{expected.inspect}, elle retourne #{actual.inspect}…")
+    actual    = date_humaine
+    assert_equal(expected, actual, ":date_humaine devrait retourner #{expected.inspect}, elle retourne #{actual.inspect}…")  
+  end
+
+  def test_human_date_with_date
+    expected = "3 mars 2023"
+    ladate = Time.new(2023,3,3, 15,3, 26)
+    actual    = human_date(ladate)
+    assert_equal(expected, actual, ":human_date(<3/03/2023>) devrait retourner #{expected.inspect}, elle retourne #{actual.inspect}…")
+    actual    = date_humaine(ladate)
+    assert_equal(expected, actual, ":date_humaine(<3/03/2023>) devrait retourner #{expected.inspect}, elle retourne #{actual.inspect}…")  
+  end
+
+  def test_human_date_with_option_longueur
+    expected = "6 juil. 2023"
+    ladate = Time.new(2023, 7,6, 3,3,3)
+    actual    = human_date(ladate, **{length: :court})
+    assert_equal(expected, actual, ":human_date(<3/03/2023>) devrait retourner #{expected.inspect}, elle retourne #{actual.inspect}…")
+    actual    = date_humaine(ladate, **{length: :court})
+    assert_equal(expected, actual, ":date_humaine(<3/03/2023>) devrait retourner #{expected.inspect}, elle retourne #{actual.inspect}…")  
+  end
+
+  # - ilya -
+
   def test_ilya
     assert_respond_to Kernel, :ilya
     assert_respond_to Integer, :ago
@@ -57,9 +99,9 @@ class DateUtilsTests < Minitest::Test
     assert_equal('21 11 2022 - 11:07:12', formate_date(time, seconds:true, update_format:true))
     # Sans format => le même
     assert_equal('11 07 2022 - 12:11:13', formate_date(time2))
-    assert_equal('le 21 11 2022 à 11:07', formate_date(time, update_format:true, sentence:true))
+    assert_equal('le 21 novembre 2022 à 11 h 07', formate_date(time, **{update_format:true, sentence:true}))
     # Sans format : le même
-    assert_equal('le 11 07 2022 à 12:11', formate_date(time2))
+    assert_equal('11 07 2022 - 12:11', formate_date(time2, **{update_format:true}))
   end
 
   def test_date_for_file
