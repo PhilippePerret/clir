@@ -160,3 +160,17 @@ Q.mode
 # => :interactive ou :inputs
 ~~~
 
+
+
+## CLI.options
+
+Pour définir ses propres options en ligne de commande :
+
+~~~ruby
+CLI.set_options_table({
+  s: :simulation,
+  ...
+})
+~~~
+
+> Noter que les deux éléments doivent être des `Symbol`s.

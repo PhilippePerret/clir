@@ -1,3 +1,5 @@
+* 0.18.0
+  - Add File#append method
 * 0.17.2
   - Add human_date/date_humaine method
 * 0.17.1

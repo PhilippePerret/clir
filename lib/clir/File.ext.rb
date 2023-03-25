@@ -51,4 +51,15 @@ class File
     File.basename(path,File.extname(path))
   end
 
+  ##
+  # Add +code+ to file at +fpath+
+  # 
+  def self.append(fpath, code)
+    begin
+      open(fpath,'a') { |f| f.write(code) }
+    rescue ENOENT
+      raise "Folder #{File.dirname(fpath)} doesn't exist. Unable to write #{fpath} file."
+    end
+  end
+
 end

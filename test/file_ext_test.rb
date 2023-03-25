@@ -20,6 +20,30 @@ class FileExtTest < Minitest::Test
     assert_respond_to File, :tail
   end
 
+  def test_append_method_exist
+    assert_respond_to File, :append
+  end
+
+  def test_append_method_without_file
+    refute File.exist?(file_test)
+    msg = "Un contenu le #{Time.now}".freeze
+    File.append(file_test, msg)
+    assert( File.exist?(file_test), "Le fichier #{file_test} devrait exister")
+    expected = msg.strip
+    actual   = File.read(file_test).strip
+    assert_equal(expected, actual, "Le contenu du fichier devrait être #{expected.inspect}…")
+  end
+
+  def test_append_method_with_file
+    msg_ini = "Un paragraphe\nUn autre paragraphe\n"
+    File.write(file_test, msg_ini)
+    msg = "Un contenu le #{Time.now}"
+    File.append(file_test, msg)
+    expected = "#{msg_ini}#{msg}"
+    actual = File.read(file_test)
+    assert_equal(expected, actual, "Le contenu du fichier devrait être #{expected.inspect}…")
+  end
+
   def test_tail_return_right_result
     
     content = <<~TEXT
