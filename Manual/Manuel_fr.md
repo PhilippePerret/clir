@@ -16,6 +16,25 @@ require 'clir'
 
 ## L'application
 
+### Options de la ligne de commande
+
+~~~ruby
+CLI.options # => liste complète des options
+CLI.option(:option) # => true si l'option --option est activité
+~~~
+
+L’option peut aussi avoir une valeur :
+
+~~~
+> macommande -n=4 -o
+
+# =>
+
+# {n: 4, o: true}
+~~~
+
+Voir aussi [les options propres à l’application](#app-own-options).
+
 ### Rejouer une commande (mode `Replayer`)
 
 Pour rejouer une commande — pas seulement la commmande mais aussi toutes les entrées qui ont été faites — on joue juste `app _`.
@@ -162,7 +181,9 @@ Q.mode
 
 
 
-## CLI.options
+<a name="app-own-options"></a>
+
+## Options propres à l’application
 
 Pour définir ses propres options en ligne de commande :
 

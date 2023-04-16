@@ -14,6 +14,7 @@ def mkdir(pth)
   FileUtils.mkdir_p(pth)
   return pth
 end
+alias :mkdir_p :mkdir
 
 
 ##

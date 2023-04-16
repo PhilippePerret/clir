@@ -1,3 +1,6 @@
+* 0.18.1
+  - mkdir_p alias de mkdir
+    (à cause des changements de FileUtils…)
 * 0.18.0
   - Add File#append method
 * 0.17.2
