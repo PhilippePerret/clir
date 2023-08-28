@@ -13,4 +13,8 @@ class Symbol
     end
   end
 
+  def camelize
+    self.to_s.camelize
+  end
+
 end 
