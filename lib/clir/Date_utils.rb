@@ -53,6 +53,13 @@ def date_for_file(time = nil, with_hour = false, del = '-')
   time.strftime(fmt)
 end
 
+# @reçoit une date et la retourne sous la forme "YYYY-MM-DD"
+def ymd(time = nil, delimitor = '-')
+  time ||= Time.now
+  time.strftime("%Y#{delimitor}%m#{delimitor}%d")
+end
+
+
 # @return Date corresponding to +foo+
 # @param [String|Integer|Time|Date] foo
 #           - [Time] Return itself

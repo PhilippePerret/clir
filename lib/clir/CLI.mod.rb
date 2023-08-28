@@ -58,7 +58,7 @@ class << self
   ##
   # @main command (after command name)
   def main_command
-    @main_command || self.init
+    defined?(@main_command) || self.init
     @main_command
   end
 
@@ -81,7 +81,7 @@ class << self
   # that are not main_command
   # 
   def components
-    @components || self.init
+    defined?(@components) || self.init
     @components
   end
 

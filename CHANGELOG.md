@@ -1,3 +1,7 @@
+* 0.19.0
+  - Amélioration du manuel
+* 0.18.2
+  - petite correction pour rubycop…
 * 0.18.1
   - mkdir_p alias de mkdir
     (à cause des changements de FileUtils…)

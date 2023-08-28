@@ -61,6 +61,18 @@ class DateUtilsTests < Minitest::Test
     assert_equal expected, Time.now.mm_dd_yyyy('---')
   end
 
+  def test_ymd
+    [
+      [Time.now.strftime('%Y-%m-%d'), "ymd()"],
+      [Time.now.strftime('%Y+%m+%d'), "ymd(nil, '+')"],
+      ['2033-08-28', "ymd(Time.new(2033,8,28))"],
+      ['2033/08/28', "ymd(Time.new(2033,8,28),'/')"],
+    ].each do |expected, expression|
+      actual = eval(expression)
+      assert_equal(expected, actual, "#{expression} devrait produire '#{expected}'. Elle produit '#{actual}'…")
+    end
+  end
+
   def test_ilya
     expected = (Time.now - 2 * 3600 * 24).jj_mm_aaaa
     assert_equal expected, ilya(2.jours)

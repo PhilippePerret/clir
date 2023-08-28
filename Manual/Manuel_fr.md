@@ -16,6 +16,31 @@ require 'clir'
 
 ## L'application
 
+### CLI
+
+Si on joue cette commande dans le terminal : `macom --version help -n pour voir valeur=12`
+
+On obtiendra : 
+
+~~~ruby
+
+CLI.command_name
+# => 'macom'
+ 
+CLI.main_command
+# => 'help'
+
+CLI.options
+# => {version: true, n: true} # ou remplacement de :n
+
+CLI.params
+# => {value: 12}
+
+CLI.components
+# => ['pour', 'voir']
+
+~~~
+
 ### Options de la ligne de commande
 
 ~~~ruby
