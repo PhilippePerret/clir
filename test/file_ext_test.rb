@@ -90,4 +90,26 @@ class FileExtTest < Minitest::Test
     assert_equal(expected, retour)
   end
 
+  def test_readlines_backward
+    # Test de la lecture d'un fichier, ligne par ligne, en partant
+    # du bas
+    # 
+
+    assert_respond_to File, :readlines_backward
+
+  end
+
+  def test_readlines_backward_with_huge_file
+    File.open(file_test,'wb') do |f|
+      f.puts "Iteration,Date"
+      1000000.times do |i|
+        f.puts("#{i},#{}")
+      end
+    end
+    
+  end
+  def test_realines_backward_with_small_file
+    
+  end
+
 end #/class FileExtTest
