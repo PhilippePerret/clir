@@ -26,6 +26,7 @@ class << self
   def readlines_backward(path, **options, &block)
 
     options ||= {}
+    options.key?(:col_sep) || options.merge!(col_sep: ',')
 
     file = File.new(path)
     size = File.size(file)
@@ -37,7 +38,9 @@ class << self
     #
     # Si options[:headers] est true, il faut récupérer la première
     # ligne et la transformer en entête
+    # @note Cet entête permettra d'instancier les rangées (\CSV::Row)
     # 
+    headers = nil
     if options[:headers]
       begin
         fileh   = File.open(path,'r')
@@ -53,13 +56,6 @@ class << self
 
     if block_given?
       #
-      # Les options pour CSV.parse
-      # On garde seulement les convertisseurs de données et on met 
-      # toujours headers à false (puisque c'est seulement la ligne
-      # de données qui sera parser)
-      # 
-      # line_csv_options = {headers:false, converters: options[:converters]}
-      line_csv_options = options
       #
       # Avec un bloc fourni, on va lire ligne par ligne en partant
       # de la fin.
@@ -79,11 +75,6 @@ class << self
       #
       # On boucle tant qu'on n'interrompt pas (pour le moment)
       # 
-      # QUESTIONS
-      #   1.  Comment repère-t-on la fin ? En comparant la position
-      #       actuelle du pointeur avec 0 ?
-      #   2.  Comment met-on fin à la recherche (c'est presque la 
-      #       même question)
       while true
         #
         # On lit la longueur du tampon en l'ajoutant à ce qu'on a 
@@ -115,11 +106,41 @@ class << self
           # 
           lines.each do |line|
             line = line.chomp
-            line = "#{header}\n#{line}\n" if options[:headers]
+
+            # Je crois que c'est ça qui prend trop de temps
+            # line = "#{header}\n#{line}\n" if options[:headers]
             # puts "line parsée : #{line.inspect}".bleu
-            line_csv = CSV.parse(line, **line_csv_options)
+            # line_csv = CSV.parse(line, **line_csv_options) 
             # puts "line_csv: #{line_csv.inspect}::#{line_csv.class}".orange
-            yield line_csv[0]
+            # yield line_csv[0]
+            # 
+
+            # 
+            # Convertir les valeurs si des convertisseurs sont
+            # définis
+            # NOTE : Pour le moment, je reste simple et un peu brut
+            # 
+            values = line.split(options[:col_sep])
+            if options[:converters]
+              values = values.collect do |value|
+                options[:converters].each do |converter|
+                  if converter == :numeric && value.numeric?
+                    value = value.to_i and break
+                  elsif converter == :date && value.match?(/[0-9]{2,4}/)
+                    begin
+                      value = Date.parse(value)
+                      break
+                    rescue nil
+                    end
+                  end
+                end
+                value
+              end
+            end
+
+            row = CSV::Row.new(headers, values)
+
+            yield row
           end
         end
         #

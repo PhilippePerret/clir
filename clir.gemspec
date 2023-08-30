@@ -7,8 +7,8 @@ Gem::Specification.new do |s|
   s.email         = ["philippe.perret@yahoo.fr"]
 
   s.summary       = %q{Command Line Interface for Ruby applications}
-  s.description   = %q{Command Line Interface for Ruby applications}
-  s.homepage      = "https://github.com/PhilippePerret/clir"
+  s.description   = %q{Command Line Interface for Ruby applications, a lot of usefull methods}
+  s.homepage      = "https://rubygems.org/gems/clir"
   s.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
   # --- Development dependencies ---
@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency "tty-prompt"
 
 
-  s.metadata["allowed_push_host"] = "https://github.com/PhilippePerret/clir"
+  s.metadata["allowed_push_host"] = "https://rubygems.org"
 
   s.metadata["homepage_uri"] = s.homepage
   s.metadata["source_code_uri"] = "https://github.com/PhilippePerret/clir"

@@ -1,3 +1,8 @@
+* 0.22.1
+
+  - Rationnalisation de la méthode `CSV.foreach_backward` qui, maintenant, fonctionne plus
+    vite que `foreach` pour trouver un élément plus près de la fin.
+    
 * 022.0
 
   - Extension pour la clas CSV (lecture en arrière)
