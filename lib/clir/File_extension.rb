@@ -40,45 +40,44 @@ class File
     file.close
   end
 
-  # alias : tail_lines
-  def self.readlines_backward(path, &block)
-    # 
-    # Si le fichier n'est pas trop gros, on le lit à l'envers
-    # en le chargeant.
-    # 
-    if File.size(File.new(path)) < ( 1 << 16 ) 
-      self.readlines(path).reverse.each do |line|
-        yield line
-      end
-      return
-    end
+  # def self.readlines_backward(path, &block)
+  #   # 
+  #   # Si le fichier n'est pas trop gros, on le lit à l'envers
+  #   # en le chargeant.
+  #   # 
+  #   if File.size(File.new(path)) < ( 1 << 16 ) 
+  #     self.readlines(path).reverse.each do |line|
+  #       yield line
+  #     end
+  #     return
+  #   end
 
-    #
-    # Pour un gros fichier
-    # 
+  #   #
+  #   # Pour un gros fichier
+  #   # 
 
-    # TODO ON POURRAIT METTRE UN BUFFER MOINS GRAND POUR NE PAS
-    # AVOIR DE TROP NOMBREUSES LIGNES EN MÊME TEMPS
-    tail_buf_length = 1 << 16 # 65000 et quelques
-    file = File.new(path)
+  #   # TODO ON POURRAIT METTRE UN BUFFER MOINS GRAND POUR NE PAS
+  #   # AVOIR DE TROP NOMBREUSES LIGNES EN MÊME TEMPS
+  #   tail_buf_length = 1 << 16 # 65000 et quelques
+  #   file = File.new(path)
 
-    file.seek(-tail_buf_length,IO::SEEK_END)
-    out   = ""
-    count = 0
-    while count <= n # TODO C'EST CETTE BOUCLE QU'IL FAUT DÉVELOPPER JUSQU'EN HAUT
-      buf     =  file.read( tail_buf_length )
-      count   += buf.count("\n")
-      out     += buf
-      # 2 * since the pointer is a the end , of the previous iteration
-      file.seek(2 * -tail_buf_length,IO::SEEK_CUR)
-    end
-    # TODO : IL FAUT S'Y PRENDRE MIEUX QUE ÇA POUR TOUT LIRE 
-    # CAR MAINTENANT +n+ N'EST PLUS LE NOMBRE DE LIGNES DONNÉES EN
-    # ARGUMENT DE LA MÉTHODE tail ORIGINALE
-    out.split("\n")[-n..-1].each do |line|
-      yield line
-    end
-  end
+  #   file.seek(-tail_buf_length,IO::SEEK_END)
+  #   out   = ""
+  #   count = 0
+  #   while count <= n # TODO C'EST CETTE BOUCLE QU'IL FAUT DÉVELOPPER JUSQU'EN HAUT
+  #     buf     =  file.read( tail_buf_length )
+  #     count   += buf.count("\n")
+  #     out     += buf
+  #     # 2 * since the pointer is a the end , of the previous iteration
+  #     file.seek(2 * -tail_buf_length,IO::SEEK_CUR)
+  #   end
+  #   # TODO : IL FAUT S'Y PRENDRE MIEUX QUE ÇA POUR TOUT LIRE 
+  #   # CAR MAINTENANT +n+ N'EST PLUS LE NOMBRE DE LIGNES DONNÉES EN
+  #   # ARGUMENT DE LA MÉTHODE tail ORIGINALE
+  #   out.split("\n")[-n..-1].each do |line|
+  #     yield line
+  #   end
+  # end
 
   # @return les +n+ dernières lignes d'un fichier
   def tail_lines(n)

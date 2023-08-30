@@ -3,15 +3,19 @@ require 'date'
 
 class CVSExtensionTest < Minitest::Test
 
-  DO_NOT_ERASE_HUGE_CSV_FILE = true # Mettre à false en temps normal et à true quand on travaille ce test
+  DO_NOT_ERASE_HUGE_CSV_FILE = false # true # Mettre à false en temps normal et à true quand on travaille ce test
 
   def setup
     super
+    if !DO_NOT_ERASE_HUGE_CSV_FILE
+      File.delete(huge_file_csv) if File.exist?(huge_file_csv)
+    end
   end
 
   def teardown
     if !DO_NOT_ERASE_HUGE_CSV_FILE
       File.delete(huge_file_csv) if File.exist?(huge_file_csv)
+      File.delete(small_file_csv) if File.exist?(small_file_csv)
     end
   end
 
@@ -23,7 +27,8 @@ class CVSExtensionTest < Minitest::Test
   end
 
   def build_huge_csv_file
-    return if File.exist?(huge_file_csv) && DO_NOT_ERASE_HUGE_CSV_FILE
+    return if File.exist?(huge_file_csv)
+    puts "Fabrication d'un énorme fichier CSV… Merci de votre patience.".bleu
     File.open(huge_file_csv,'wb') do |f|
       f.puts "Iteration,Date,Indice,Note"
       1000000.times do |i|
@@ -33,7 +38,7 @@ class CVSExtensionTest < Minitest::Test
   end
 
   def build_small_file_csv
-    return if File.exist?(small_file_csv) && DO_NOT_ERASE_HUGE_CSV_FILE
+    return if File.exist?(small_file_csv)
     File.open(small_file_csv,'wb') do |f|
       f.puts "Iteration,Date,Indice,Note"
       10.times do |i|
@@ -75,24 +80,27 @@ class CVSExtensionTest < Minitest::Test
 
   def test_realines_backwards
     assert_respond_to CSV, :readlines_backward
+    assert_respond_to CSV, :foreach_backward
     assert_respond_to CSV, :readlines_backwards
+    assert_respond_to CSV, :foreach_backwards
   end
 
-  # def test_conversion_headers
+  def test_conversion_headers
+    build_huge_csv_file
 
-  #   options = {headers:true}
-  #   CSV.readlines_backward(huge_file_csv, **options) {|row| break }
-  #   assert_equal(["Iteration","Date","Indice","Note"], CSV.headers_for_test)
+    options = {headers:true}
+    CSV.readlines_backward(huge_file_csv, **options) {|row| break }
+    assert_equal(["Iteration","Date","Indice","Note"], CSV.headers_for_test)
 
-  #   options = {headers:true, header_converters: :downcase}
-  #   CSV.readlines_backward(huge_file_csv, **options) {|row| break }
-  #   assert_equal(["iteration","date","indice","note"], CSV.headers_for_test)
+    options = {headers:true, header_converters: :downcase}
+    CSV.readlines_backward(huge_file_csv, **options) {|row| break }
+    assert_equal(["iteration","date","indice","note"], CSV.headers_for_test)
 
-  #   options = {headers:true, header_converters: :symbol}
-  #   CSV.readlines_backward(huge_file_csv, **options) {|row| break }
-  #   assert_equal([:iteration,:date,:indice,:note], CSV.headers_for_test)
+    options = {headers:true, header_converters: :symbol}
+    CSV.readlines_backward(huge_file_csv, **options) {|row| break }
+    assert_equal([:iteration,:date,:indice,:note], CSV.headers_for_test)
 
-  # end
+  end
 
   def test_realines_backward_with_small_file
     build_small_file_csv
@@ -143,12 +151,11 @@ class CVSExtensionTest < Minitest::Test
   def test_readlines_backward_with_huge_file
     build_huge_csv_file
     rows = []
+    # stop_loop = 0
     CSV.readlines_backward(huge_file_csv) do |row|
-      if row[0] == '5000'
-        rows << row
-        break
-      end
-      # break if rows.count == 120
+      rows << row
+      break if rows.count == 4 # on n'en prend que 4
+      # break if (stop_loop += 1) > 100
     end
     assert_equal(4, rows.count, "La liste devrait contenir 4 lignes")
     assert_match(/999999 \+ ([0-9.]+) \+ 1000000 \+/, rows[0].join(' + '))
@@ -158,15 +165,70 @@ class CVSExtensionTest < Minitest::Test
   end
 
 
-  # def test_readlines_backward_with_headers
-  #   build_huge_csv_file    
-  #   options = {headers: true}
-  #   rows = []
-  #   CSV.readlines_backward(huge_file_csv, **options) do |row|
-  #     rows << row
-  #     break if rows.count == 4
-  #   end
-  #   assert_equal(4, rows.count, "La liste devrait contenir 4 lignes")
-  # end
+  def test_readlines_backward_with_headers_with_huge_file
+    build_huge_csv_file    
+    options = {headers: true, header_converters: :symbol, converters:[:numeric]}
+    rows = []
+    CSV.readlines_backward(huge_file_csv, **options) do |row|
+      rows << row
+      break if rows.count == 4
+    end
+    assert_equal(4, rows.count, "La liste devrait contenir 4 lignes")
+    [
+      [999999, "rows[0][:iteration]"],
+      [1000000, "rows[0][:indice]"],
+      [999998, "rows[1][:iteration]"],
+      [999999, "rows[1][:indice]"],
+    ].each do |expected, expression|
+      actual = eval(expression)
+      # puts "#{expression} = #{actual.inspect}".bleu
+      assert_equal(expected, actual, "#{expression} devrait valoir #{expected}. Elle vaut #{actual}…")
+    end
+  end
+
+  def test_recherche_une_ligne_en_particulier_dans_huge_file
+    #
+    # Dans ce test, on va rechercher une rangée qui est plutôt à la 
+    # fin (> 50 000 = 75000) des deux façons possibles, pour s'assurer
+    # que la méthode en commençant par la fin est bien plus rapide.
+    # 
+    # Par la même occasion on peut s'assurer que les méthodes readlines
+    # et readlines_backward fonctionnent bien de la même manière.
+    # 
+    build_huge_csv_file    
+    options = {headers: true, header_converters: :symbol, converters:[:numeric]}
+    row_found = nil
+    #
+    # On commence en lisant normalement
+    # 
+    STDOUT.write "Attente normale (je lis un énorme fichier)…".vert
+    # start_time = Time.now.to_f
+    CSV.foreach(huge_file_csv, **options) do |row|
+      if row[:iteration] == 750000
+        row_found = row and break
+      end
+    end
+    # duree_with_foreach = Time.now.to_f - start_time
+    assert(row_found)
+    assert_equal(750001, row_found[:indice])
+    # exit
+
+    row_found = nil
+    # start_time = Time.now.to_f
+    CSV.readlines_backward(huge_file_csv, **options) do |row|
+      if row[:iteration] == 750000
+        row_found = row and break
+      end
+    end
+    # duree_with_readlines_backward = Time.now.to_f - start_time
+    assert(row_found)
+    assert_equal(750001, row_found[:indice])
+
+    # MALHEUREUSEMENT, POUR LE MOMENT, ÇA N'EST PAS PLUS RAPIDE AVEC BACKWARD…
+    # puts "duree_with_readlines_backward : #{duree_with_readlines_backward.inspect}".bleu
+    # puts "\nduree_with_foreach : #{duree_with_foreach.inspect}".bleu
+    # assert(duree_with_foreach > 2 * duree_with_readlines_backward, "Ça devrait prendre deux fois plus de temps de lire à l'endroit…")
+
+  end
 
 end
