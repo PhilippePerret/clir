@@ -193,19 +193,33 @@ class String
     "\033[0;38m#{self}\033[0m"
   end
   alias :white :blanc
+  def blanc_
+    "\033[0;38m#{self}"
+  end
 
   def blanc_clair
     "\033[0;37m#{self}\033[0m"
+  end
+  def blanc_clair_
+    "\033[0;37m#{self}"
   end
   
   def bleu
     "\033[0;96m#{self}\033[0m"
   end
   alias :blue :bleu
+  
+  def bleu_
+    "\033[0;96m#{self}"
+  end
 
   def bleu_clair
     "\033[0;36m#{self}\033[0m"
   end
+  def bleu_clair_
+    "\033[0;36m#{self}"
+  end
+
 
   def fond_bleu
     "\033[0;44m#{self}\033[0m"
@@ -219,11 +233,17 @@ class String
     "\033[0;92m#{self}\033[0m"
   end
   alias :green :vert
+  def vert_
+    "\033[0;92m#{self}"
+  end
 
   def vert_clair
     "\033[0;32m#{self}\033[0m"
   end
   alias :ligth_green :vert_clair
+  def vert_clair_
+    "\033[0;32m#{self}"
+  end
 
   def fond_vert
     "\033[0;42m#{self}\033[0m"
@@ -233,20 +253,32 @@ class String
     "\033[0;91m#{self}\033[0m"
   end
   alias :red :rouge
+  def rouge_
+    "\033[0;91m#{self}"
+  end
 
   def gris
     "\033[0;90m#{self}\033[0m"
   end
   alias :grey :gris
+  def gris_
+    "\033[0;90m#{self}"
+  end
 
   def orange
     "\033[38;5;214m#{self}\033[0m"
+  end
+  def orange_
+    "\033[38;5;214m#{self}"
   end
  
   def jaune
     "\033[0;93m#{self}\033[0m"
   end
   alias :yellow :jaune
+  def jaune_
+    "\033[0;93m#{self}"
+  end
 
   def jaune_dark
     "\033[0;33m#{self}\033[0m"
@@ -256,6 +288,9 @@ class String
     "\033[1;94m#{self}\033[0m"
   end
   alias :purple :mauve
+  def mauve_
+    "\033[1;94m#{self}"
+  end
 
 
   # --- Transform Methods ---

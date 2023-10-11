@@ -20,7 +20,21 @@ Or install it yourself as:
 
 ## Usage
 
-[TODO] Reprendre toutes les méthodes
+### String extensions
+
+> Only some of them below.
+
+~~~ruby
+puts "Some texte in red".red
+
+puts <<~EOT
+This text is white.
+#{'color follows'.yellow_} This text is also in yellow thanks
+to the '_' after de color name.
+EOT
+~~~
+
+
 
 ### Test state
 
