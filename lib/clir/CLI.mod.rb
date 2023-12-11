@@ -210,6 +210,7 @@ class << self
           :q  => :quiet,
           :v  => :verbose,
           :x  => :debug,
+          :v  => :version,
         }.merge(app_options_table)
       end
     end

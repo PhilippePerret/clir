@@ -36,11 +36,16 @@ class << self
     :TRUE == @__helpon ||= true_or_false(CLI.options[:help] === true || ['help','aide'].include?(CLI.main_command))
   end
 
+  def version?
+    :TRUE == @__versionon ||= true_or_false(CLI.options[:version] === true || ['version'].include?(CLI.main_command))
+  end
+
   def reset
     @__isverbose  = nil
     @__debugon    = nil
     @__teston     = nil
     @__helpon     = nil
+    @__versionon  = nil
   end
 
 end #/<< self
