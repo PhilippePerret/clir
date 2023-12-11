@@ -16,6 +16,10 @@ def help?
   Clir::State.help?
 end
 
+def version?
+  Clir::State.version?
+end
+
 module Clir
 class State
 class << self 

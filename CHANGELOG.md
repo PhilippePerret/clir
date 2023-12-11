@@ -1,3 +1,7 @@
+* 0.24.1
+
+- (minor change) exposition de la méthode `version?`
+
 * 0.24.0
 
 - Ajout de `version?` qui permet de demande l’affichage de la version de l’application avec `<app> -v` ou `<app> --version`. L’application doit alors traiter la commande `version`.
