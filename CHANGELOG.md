@@ -1,3 +1,7 @@
+* 0.24.2
+
+- suppression de l’option réduite `-v` pour `--version` qui est déjà utilisée pour `--verbose`.
+
 * 0.24.1
 
 - (minor change) exposition de la méthode `version?`
